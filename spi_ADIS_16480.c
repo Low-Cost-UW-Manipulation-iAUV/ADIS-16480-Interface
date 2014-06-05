@@ -11,28 +11,15 @@
 
 /**
  * 
- * This spi_test is intended to be run on beaglebone white hardware
- * and uses the SPIDEV1 device on pins P9_31 as SCLK, P9_29 as SI, 
- * P9_30 as as SO, P9_28 as CS.
- *
- * The BeagleBone is connected to a MicroChip 25LC640-I/P 64K EEPROM.
- *
- * The test covers writing 32 bytes of random data, to a random page
- * on the EEPROM. It then reads the page back, and compares the data
- * read against the data sent, the test passes if all data matches.
- * 
+ * This SPI interface for the ADIS16480 IMU is based on libsoc library by Jack Mitchell
+ * Author: Raphael Nagel
+ * Date: 04/June/2014
  */
  
+//Define the SPI line and chip select line 
 #define SPI_DEVICE   1
 #define CHIP_SELECT  0
 
-
-#define WREN  0x06
-#define WRDI  0x04
-#define WRITE 0x02
-#define READ  0x03
-#define RDSR  0x05
-/*Stop deletinhg here*/
 
 /*ADIS 16480 Register Pages*/
 #define PG0 0x80  // Output data, clock, identification
@@ -114,16 +101,16 @@ int main()
     return EXIT_FAILURE;
   }
 
-  libsoc_spi_set_mode(spi_dev, MODE_3);
+  libsoc_spi_set_mode(spi_dev, MODE_3); //ADIS16480 needs 16-bit mode
   libsoc_spi_get_mode(spi_dev);
   
   libsoc_spi_set_speed(spi_dev, 11999999); //Seems to be limited to <12MHz ??! weird...
   libsoc_spi_get_speed(spi_dev);
   
-  libsoc_spi_set_bits_per_word(spi_dev, BITS_16);
+  libsoc_spi_set_bits_per_word(spi_dev, BITS_8);
   libsoc_spi_get_bits_per_word(spi_dev);
   
-  status = read_product_id(spi_dev);
+  status = read_product_id(spi_dev);    //best testing - expect 0x4060
 
 
   libsoc_spi_free(spi_dev);
