@@ -39,7 +39,7 @@
 /*Registers needed for the UWEsub's use of the */ 
 #define PROD_ID 0x7e        // Product ID register which is stable and predefined to be 0x4060 = .16480 = 0b0100 0000 0110 0000
 #define DIAG_STS 0x0A       // Register holding the startup self test results
-#define SYS_E_FLAG 0x0800   // Holds the System Error Flags and new Data flags for the Barometer and Magnetometer
+#define SYS_E_FLAG 0x08   // Holds the System Error Flags and new Data flags for the Barometer and Magnetometer
 
 /*Bitmasks*/
 
@@ -144,58 +144,142 @@ uint8_t read_self_test(spi* spi_dev) {
   /*merge the two 8 bit words*/
   merged_data = rx[5];                        // 2nd byte to the LSBs
   merged_data = (merged_data | (rx[4]<<8));  // first byte to the MSBs
-  merged_data = (merged_data && BITMASK_b15to12_7to_6);      /* The DIAG_STS register bits 15-12 and 7-6 
+  merged_data = (merged_data & BITMASK_b15to12_7to_6);      /* The DIAG_STS register bits 15-12 and 7-6 
                                                 are don't care and might be set without there being a problem.*/
 
   if (merged_data == 0){  //No Errors
 
-    printf("ADIS16480: Self Test results show  NO errors"); 
+    printf("ADIS16480: Self Test results show  NO errors\n"); 
     return 1; // IMplement proper error message later
 
   }else{
-    printf("ADIS16480: Self Test showed the following ERRORS:");
+    printf("ADIS16480: Self Test showed the following ERRORS:\n");
 
     if(merged_data & BITMASK_DIAG_STS_BARO){
-      printf("ADIS16480: Self Test - Barometer Error");
+      printf("ADIS16480: Self Test - Barometer Error\n");
     }
     /*Check the Magnetometer*/
     if(merged_data & BITMASK_DIAG_STS_MAG_Z){
-      printf("ADIS16480: Self Test - Magnetometer Z-axis Error");
+      printf("ADIS16480: Self Test - Magnetometer Z-axis Error\n");
     }
     if(merged_data & BITMASK_DIAG_STS_MAG_Y){
-      printf("ADIS16480: Self Test - Magnetometer Y-axis Error");
+      printf("ADIS16480: Self Test - Magnetometer Y-axis Error\n");
     }
     if(merged_data & BITMASK_DIAG_STS_MAG_X){
-      printf("ADIS16480: Self Test - Magnetometer X-axis Error");
+      printf("ADIS16480: Self Test - Magnetometer X-axis Error\n");
     }
     /*Check the Accelerometer*/
     if(merged_data & BITMASK_DIAG_STS_ACC_Z){
-      printf("ADIS16480: Self Test - Accelerometer Z-axis Error");
+      printf("ADIS16480: Self Test - Accelerometer Z-axis Error\n");
     }
     if(merged_data & BITMASK_DIAG_STS_ACC_Y){
-      printf("ADIS16480: Self Test - Accelerometer Y-axis Error");
+      printf("ADIS16480: Self Test - Accelerometer Y-axis Error\n");
     }
     if(merged_data & BITMASK_DIAG_STS_ACC_X){
-      printf("ADIS16480: Self Test - Accelerometer X-axis Error");
+      printf("ADIS16480: Self Test - Accelerometer X-axis Error\n");
     }
     /*Check the Gyroscopes*/
     if(merged_data & BITMASK_DIAG_STS_GYRO_Z){
-      printf("ADIS16480: Self Test - Gyroscope Z-axis Error");
+      printf("ADIS16480: Self Test - Gyroscope Z-axis Error\n");
     }
     if(merged_data & BITMASK_DIAG_STS_GYRO_Y){
-      printf("ADIS16480: Self Test - Gyroscope Y-axis Error");
+      printf("ADIS16480: Self Test - Gyroscope Y-axis Error\n");
     }
     if(merged_data & BITMASK_DIAG_STS_GYRO_X){
-      printf("ADIS16480: Self Test - Gyroscope X-axis Error");
+      printf("ADIS16480: Self Test - Gyroscope X-axis Error\n");
     }
 
     return 0; // Implement proper error message later
   }
   
-  printf("ADIS16480: Something went wrong while checking the IMU status, we should never have gotten here.");
+  printf("ADIS16480: Something went wrong while checking the IMU status, we should never have gotten here.\n");
   return 0;
 }
 
+uint8_t read_error_flags(spi* spi_dev) {
+  
+  uint16_t merged_data = 0;
+
+  printf("ADIS16480: Reading Error Flags\n");
+    
+  tx[0] = PG0;        // Switch to page 0
+  tx[1] = 0x00;
+  tx[2] = SYS_E_FLAG;   // Send  the Diagnostics register read command
+  tx[3] = 0x00;
+  tx[4] = 0x00;       // Get the precious answer bits home to papa (clock the bits from the ADIS to the BBB)
+  tx[5] = 0x00;
+
+
+  rx[0] = 0;          // Empty the receiving register
+  rx[1] = 0;
+  rx[2] = 0;
+  rx[3] = 0;
+  rx[4] = 0;
+  rx[5] = 0;
+
+  libsoc_spi_rw(spi_dev, tx, rx, 6);    //Do the actual SPI commands
+  
+  /*merge the two 8 bit words*/
+  merged_data = rx[5];                        // 2nd byte to the LSBs
+  merged_data = (merged_data | (rx[4]<<8));  // first byte to the MSBs
+  merged_data = (merged_data & BITMASK_b2to3);      /* The SYS_E_FLAG register bits 14, 1 and 2 are dont care.*/
+
+  if (merged_data == 0){  //No Errors
+
+    printf("ADIS16480: No System Errors\n"); 
+    return 1; // IMplement proper error message later
+
+  }else{
+    printf("ADIS16480: System Errors occured:\n");
+    printf("ADIS16480: 0x%x %x\n",rx[4], rx[5] );
+
+
+    if(merged_data & BITMASK_SYS_E_FLAG_WDTOUT){
+      printf("ADIS16480: System Error - Watchdog Timer Error\n");
+    }
+    if(merged_data & BITMASK_SYS_E_FLAG_EKFDIV){
+      printf("ADIS16480: System Error - Ext. Kalman Filter Divergence occured\n");
+    }
+    if(merged_data & BITMASK_SYS_E_FLAG_GYROSAT){
+      printf("ADIS16480: System Error - Gyroscopes are saturated - EKF impact reduced\n");
+    } 
+    if(merged_data & BITMASK_SYS_E_FLAG_MAGDIST){
+      printf("ADIS16480: System Error - Magnetic Disturbance has occured - EKF impact reduced\n");
+    }       
+    if(merged_data & BITMASK_SYS_E_FLAG_ACCEXC){
+      printf("ADIS16480: System Error - Linear Accelerometers are out of range - EKF impact reduced\n");
+    }
+    if(merged_data & BITMASK_SYS_E_FLAG_BARONEW){
+      printf("ADIS16480: System Error - New Barometer Data\n");
+    }
+    if(merged_data & BITMASK_SYS_E_FLAG_MAGNEW){
+      printf("ADIS16480: System Error - New Magnetometer Data\n");
+    } 
+    if(merged_data & BITMASK_SYS_E_FLAG_PROCOVRN){
+      printf("ADIS16480: System Error - Processor Overrun occured\n");
+    }  
+    if(merged_data & BITMASK_SYS_E_FLAG_FLUPDFL){
+      printf("ADIS16480: System Error - Flash Update failed\n");
+    }
+    if(merged_data & BITMASK_SYS_E_FLAG_DIAG_OVV){
+      printf("ADIS16480: System Error - A startup error ocuured - please check in DIAG_STS\n");
+    }
+    if(merged_data & BITMASK_SYS_E_FLAG_SNSRNG){
+      printf("ADIS16480: System Error - Sensors are out of Range\n");
+    } 
+    if(merged_data & BITMASK_SYS_E_FLAG_SPIERR){
+      printf("ADIS16480: System Error - A SPI communication error occured\n");
+    }  
+    if(merged_data & BITMASK_SYS_E_FLAG_ALM_OVV){
+      printf("ADIS16480: System Error - A User Programmable Alarm triggered - please check ALM_STS\n");
+    }  
+
+    return 0; // Implement proper error message later
+  }
+  
+  printf("ADIS16480: Something went wrong while checking the IMU status, we should never have gotten here.\n");
+  return 0;
+}
 
 
 int main()
@@ -224,6 +308,7 @@ int main()
   status = read_product_id(spi_dev);    //best testing - expect 0x4060
   if(status){
     status = read_self_test(spi_dev);
+    status = read_error_flags(spi_dev);
   }
 
   libsoc_spi_free(spi_dev);
