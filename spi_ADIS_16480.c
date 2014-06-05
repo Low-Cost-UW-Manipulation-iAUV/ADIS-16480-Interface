@@ -26,9 +26,6 @@
 #define SPI_DEVICE   1
 #define CHIP_SELECT  0
 
-/*Old stuff to be deleted*/
-#define EEPROM_SIZE 8192*8
-#define EEPROM_NUM_PAGES EEPROM_SIZE/32
 
 #define WREN  0x06
 #define WRDI  0x04
@@ -38,7 +35,7 @@
 /*Stop deletinhg here*/
 
 /*ADIS 16480 Register Pages*/
-#define PG0 0x8000  // Output data, clock, identification
+#define PG0 0x80  // Output data, clock, identification
 #define PG1 0x81  // Reserved
 #define PG2 0x82  // Calibration
 #define PG3 0x83  // Control: sample rate, filtering, I/O, alarms
@@ -53,13 +50,13 @@
 #define PG12 0x8C // FIR Filter Bank D, Coefficient 60 to Coefficient 119
 
 /*Registers needed for the UWEsub's use of the */ 
-#define PROD_ID 0x7e00        // Product ID register which is stable and predefined to be 0x4060 = .16480 = 0b0100 0000 0110 0000
+#define PROD_ID 0x7e        // Product ID register which is stable and predefined to be 0x4060 = .16480 = 0b0100 0000 0110 0000
 
 /*Bitmasks*/
 
 
  /*Global Variables*/
-static uint16_t tx[35], rx[35];
+static uint8_t tx[35], rx[35];
 
 uint8_t read_product_id(spi* spi_dev) {
   
@@ -68,15 +65,20 @@ uint8_t read_product_id(spi* spi_dev) {
   printf("ADIS16480: Reading Product ID\n");
     
   tx[0] = PG0;    //Switch to page 0
+  tx[1] = 0x00;
   tx[2] = PROD_ID;
   tx[3] = 0x00;
+  tx[4] = 0x00;
+  tx[5] = 0x00;
 
 
 
   rx[0] = 0;
   rx[1] = 0;
   rx[2] = 0;
-
+  rx[3] = 0;
+  rx[4] = 0;
+  rx[5] = 0;
 
   libsoc_spi_rw(spi_dev, tx, rx, 3);
   
