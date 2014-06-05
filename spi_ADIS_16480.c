@@ -67,14 +67,14 @@ uint8_t read_product_id(spi* spi_dev) {
   rx[4] = 0;
   rx[5] = 0;
 
-  libsoc_spi_rw(spi_dev, tx, rx, 3);
+  libsoc_spi_rw(spi_dev, tx, rx, 6);
   
   /*merge the two 8 bit words*/
   merged_data = rx[5];                        //2nd byte to the LSBs
-  merged_data = (merged_data || (rx[4]<<8));  //first byte to the MSBs
+  merged_data = (merged_data | (rx[4]<<8));  //first byte to the MSBs
 
   if (merged_data != 0x4060){
-    printf("ADIS16480: wrong PROD_ID: 0x%x%x \n",rx[4], rx[5]);
+    printf("ADIS16480: wrong PROD_ID, rx[4]: 0x%x, rx[5] 0x%x \n",rx[4], rx[5]);
     return 0; // IMplement proper error message later
   }else{
     printf("ADIS16480: correct PROD_ID: 0x%x \n",merged_data);
