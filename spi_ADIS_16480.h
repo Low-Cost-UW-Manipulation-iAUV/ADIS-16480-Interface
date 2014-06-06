@@ -12,11 +12,15 @@
 
 static uint8_t tx[35], rx[35];	//Predefine the rx and tx register
 
+//Define the SPI line and chip select line 
+#define SPI_DEVICE   1
+#define CHIP_SELECT  0
 
+//Bitmasks
 #define BITMASK_WRITE_REGISTER 0x0800     //Use this to | (OR) register addresses if you want to write to that register
 
 
- /*ADIS 16480 Register Pages*/
+/*ADIS 16480 Register Pages*/
 #define PG0 0x80  // Output data, clock, identification
 #define PG1 0x81  // Reserved
 #define PG2 0x82  // Calibration
@@ -31,4 +35,4 @@ static uint8_t tx[35], rx[35];	//Predefine the rx and tx register
 #define PG11 0x8B // FIR Filter Bank D, Coefficient 0 to Coefficient 59
 #define PG12 0x8C // FIR Filter Bank D, Coefficient 60 to Coefficient 119
 
- #endif
+#endif
