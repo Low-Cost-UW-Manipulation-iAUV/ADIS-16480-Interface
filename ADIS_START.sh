@@ -8,7 +8,7 @@
 clear
 echo "Starting the ADIS16480 Interface"
 echo "Loading the Device Tree Overlay"
-echo BB-SPIDEV1 > /sys/devices/bone_capemgr.*/slots
+echo BB-SPIDEV1 > /sys/devices/bone_capemgr.9/slots
 echo "Adding the shared libsoc library to the linker path"
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
