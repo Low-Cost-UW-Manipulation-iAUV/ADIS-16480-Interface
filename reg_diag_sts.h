@@ -11,7 +11,7 @@
 
 /*Registers needed for the UWEsub's use of the - READ ADDRESSES unless specified*/ 
 //Page 0
-#define DIAG_STS 0x0A       // Register holding the startup self test results
+#define DIAG_STS 0x0A00       // Register holding the startup self test results
 
 
 /*Bitmasks*/

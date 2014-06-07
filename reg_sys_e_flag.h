@@ -10,7 +10,7 @@
 #define _ADIS16480_SYS_E_FLAG_
 
 /*Registers*/
-#define SYS_E_FLAG 0x08   // Holds the System Error Flags and new Data flags for the Barometer and Magnetometer
+#define SYS_E_FLAG 0x0800   // Holds the System Error Flags and new Data flags for the Barometer and Magnetometer
 
 /*Bitmasks*/
 #define BITMASK_b2to3	0xBFF9  //and with SYS_E_FLAG register to set its not 'used/don't care' bits to 0

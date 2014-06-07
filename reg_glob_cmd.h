@@ -11,32 +11,24 @@
 
 /*Registers needed for the UWEsub's use of the - READ ADDRESSES unless specified*/ 
 //Page 3
-#define GLOB_CMD 0x82     // WRITE ADDESSS - Provides access to issue the global system commands (write only)
+#define GLOB_CMD 0x8200     // WRITE ADDESSS - Provides access to issue the global system commands (write only)
 
  /*System Control Commands - Page 3 - 8-bit mode --> split 16-bit commands in upper and lower 8-bit portions*/
-#define COMMAND_GLOB_CMD_EKF_RST_u 0x80 
-#define COMMAND_GLOB_CMD_EKF_RST_l 0x00 
+#define COMMAND_GLOB_CMD_EKF_RST 0x8000 
 
-#define COMMAND_GLOB_CMD_REF_ROT_RST_u 0x02
-#define COMMAND_GLOB_CMD_REF_ROT_RST_l 0x00
+#define COMMAND_GLOB_CMD_REF_ROT_RST 0x0200
 
-#define COMMAND_GLOB_CMD_TARE_u 0x01
-#define COMMAND_GLOB_CMD_TARE_l 0x00
+#define COMMAND_GLOB_CMD_TARE 0x0100
 
-#define COMMAND_GLOB_CMD_SOFT_RST_u 0x00
-#define COMMAND_GLOB_CMD_SOFT_RST_l 0x80
+#define COMMAND_GLOB_CMD_SOFT_RST 0x0080
 
-#define COMMAND_GLOB_CMD_FACT_CALIB_RESTORE_u 0x00
-#define COMMAND_GLOB_CMD_FACT_CALIB_RESTORE_l 0x40
+#define COMMAND_GLOB_CMD_FACT_CALIB_RESTORE 0x0040
 
-#define COMMAND_GLOB_CMD_FLASH_UPDT_u 0x00
-#define COMMAND_GLOB_CMD_FLASH_UPDT_l 0x08
+#define COMMAND_GLOB_CMD_FLASH_UPDT 0x0008
 
-#define COMMAND_GLOB_CMD_FLASH_TEST_u 0x00
-#define COMMAND_GLOB_CMD_FLASH_TEST_l 0x04
+#define COMMAND_GLOB_CMD_FLASH_TEST 0x0004
 
-#define COMMAND_GLOB_CMD_SELF_TST_u 0x00 
-#define COMMAND_GLOB_CMD_SELF_TST_l 0x02 
+#define COMMAND_GLOB_CMD_SELF_TST 0x0002
 
 
 
