@@ -27,8 +27,8 @@
 uint8_t do_EKF_reset(spi* spi_dev) {
 
 tx[0] = PG3;    //Switch to page 3
-tx[1] = GLOB_CMD;
-tx[2] = COMMAND_GLOB_CMD_EKF_RST;
+tx[1] = COMMAND_GLOB_CMD_EKF_RST_lower;
+tx[2] = COMMAND_GLOB_CMD_EKF_RST_upper;
 tx[3] = PG0;    //Switch to page 0
 
 libsoc_spi_rw(spi_dev, tx, rx, 8);
@@ -40,8 +40,8 @@ return 1;
 uint8_t do_Reference_rotation_matrix_reset(spi* spi_dev) {
 
 tx[0] = PG3;    //Switch to page 3
-tx[1] = GLOB_CMD;
-tx[2] = COMMAND_GLOB_CMD_REF_ROT_RST;
+tx[1] = COMMAND_GLOB_CMD_REF_ROT_RST_lower;
+tx[2] = COMMAND_GLOB_CMD_REF_ROT_RST_upper;
 tx[3] = PG0;    //Switch to page 0
 
 libsoc_spi_rw(spi_dev, tx, rx, 8);
@@ -52,10 +52,9 @@ return 1;
 
 uint8_t do_Tare(spi* spi_dev) {
 
-
 tx[0] = PG3;    //Switch to page 3
-tx[1] = GLOB_CMD;
-tx[2] = COMMAND_GLOB_CMD_TARE;
+tx[1] = COMMAND_GLOB_CMD_TARE_lower;
+tx[2] = COMMAND_GLOB_CMD_TARE_upper;
 tx[3] = PG0;    //Switch to page 0
 
 libsoc_spi_rw(spi_dev, tx, rx, 8);
@@ -66,10 +65,9 @@ return 1;
 
 uint8_t do_Software_reset(spi* spi_dev) {
 
-
 tx[0] = PG3;    //Switch to page 3
-tx[1] = GLOB_CMD;
-tx[2] = COMMAND_GLOB_CMD_SOFT_RST;
+tx[1] = COMMAND_GLOB_CMD_SOFT_RST_lower;
+tx[2] = COMMAND_GLOB_CMD_SOFT_RST_upper;
 tx[3] = PG0;    //Switch to page 0
 
 libsoc_spi_rw(spi_dev, tx, rx, 8);
@@ -79,10 +77,9 @@ return 1;
 }
 uint8_t do_Factory_calibration_restore(spi* spi_dev) {
 
-
 tx[0] = PG3;    //Switch to page 3
-tx[1] = GLOB_CMD;
-tx[2] = COMMAND_GLOB_CMD_FACT_CALIB_RESTORE;
+tx[1] = COMMAND_GLOB_CMD_FACT_CALIB_RESTORE_lower;
+tx[2] = COMMAND_GLOB_CMD_FACT_CALIB_RESTORE_upper;
 tx[3] = PG0;    //Switch to page 0
 
 libsoc_spi_rw(spi_dev, tx, rx, 8);
@@ -92,10 +89,9 @@ return 1;
 }
 uint8_t do_Flash_memory_update(spi* spi_dev) {
 
-
 tx[0] = PG3;    //Switch to page 3
-tx[1] = GLOB_CMD;
-tx[2] = COMMAND_GLOB_CMD_FLASH_UPDT;
+tx[1] = COMMAND_GLOB_CMD_FLASH_UPDT_lower;
+tx[2] = COMMAND_GLOB_CMD_FLASH_UPDT_upper;
 tx[3] = PG0;    //Switch to page 0
 
 libsoc_spi_rw(spi_dev, tx, rx, 8);
@@ -106,8 +102,8 @@ return 1;
 uint8_t do_Flash_memory_test(spi* spi_dev) {
 
 tx[0] = PG3;    //Switch to page 3
-tx[1] = GLOB_CMD;
-tx[2] = COMMAND_GLOB_CMD_EKF_RST;
+tx[1] = COMMAND_GLOB_CMD_EKF_RST_lower;
+tx[2] = COMMAND_GLOB_CMD_EKF_RST_upper;
 tx[3] = PG0;    //Switch to page 0
 
 libsoc_spi_rw(spi_dev, tx, rx, 8);
@@ -118,8 +114,8 @@ return 1;
 uint8_t do_Self_test(spi* spi_dev) {
 
 tx[0] = PG3;    //Switch to page 3
-tx[1] = GLOB_CMD;
-tx[2] = COMMAND_GLOB_CMD_EKF_RST;
+tx[1] = COMMAND_GLOB_CMD_EKF_RST_lower;
+tx[2] = COMMAND_GLOB_CMD_EKF_RST_upper;
 tx[3] = PG0;    //Switch to page 0
 
 libsoc_spi_rw(spi_dev, tx, rx, 8);

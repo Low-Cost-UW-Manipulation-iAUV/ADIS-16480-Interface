@@ -27,15 +27,14 @@ uint8_t read_error_flags(spi* spi_dev) {
   uint16_t answer = 0;
 
   printf("ADIS16480: Reading Error Flags\n");
-    
+  
   tx[0] = PG0;        // Switch to page 0
   tx[1] = SYS_E_FLAG; // Send  the Diagnostics register read command
-  tx[2] = 0x0000;       // Get the precious answer bits home to papa (clock the bits from the ADIS to the BBB)
+  tx[2] = PG0;      // Get the precious answer bits home to papa (clock the bits from the ADIS to the BBB)
 
   rx[0] = 0;          // Empty the receiving register
   rx[1] = 0;
   rx[2] = 0;
-
 
   libsoc_spi_rw(spi_dev, tx, rx, 6);    //Do the actual SPI commands
   

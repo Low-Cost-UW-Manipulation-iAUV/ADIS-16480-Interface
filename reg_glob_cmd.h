@@ -11,25 +11,35 @@
 
 /*Registers needed for the UWEsub's use of the - READ ADDRESSES unless specified*/ 
 //Page 3
-#define GLOB_CMD 0x8200     // WRITE ADDESSS - Provides access to issue the global system commands (write only)
+// Address content for GLOB_CMD 0x82     // WRITE ADDESSS - Provides access to issue the global system commands (write only)
 
  /*System Control Commands - Page 3 - 8-bit mode --> split 16-bit commands in upper and lower 8-bit portions*/
-#define COMMAND_GLOB_CMD_EKF_RST 0x8000 
+//Wanted Register Content: COMMAND_GLOB_CMD_EKF_RST 0x8000 
+#define COMMAND_GLOB_CMD_EKF_RST_lower 0x8200  
+#define COMMAND_GLOB_CMD_EKF_RST_upper 0x8280  
 
-#define COMMAND_GLOB_CMD_REF_ROT_RST 0x0200
+//Wanted Register Content: COMMAND_GLOB_CMD_REF_ROT_RST 0x0200
+#define COMMAND_GLOB_CMD_REF_ROT_RST_lower 0x8200
+#define COMMAND_GLOB_CMD_REF_ROT_RST_upper 0x8202
 
-#define COMMAND_GLOB_CMD_TARE 0x0100
-
-#define COMMAND_GLOB_CMD_SOFT_RST 0x0080
-
-#define COMMAND_GLOB_CMD_FACT_CALIB_RESTORE 0x0040
-
-#define COMMAND_GLOB_CMD_FLASH_UPDT 0x0008
-
-#define COMMAND_GLOB_CMD_FLASH_TEST 0x0004
-
-#define COMMAND_GLOB_CMD_SELF_TST 0x0002
-
+//Wanted Register Content: COMMAND_GLOB_CMD_TARE 0x0100
+#define COMMAND_GLOB_CMD_TARE_lower 0x8200
+#define COMMAND_GLOB_CMD_TARE_upper 0x8201
+//Wanted Register Content: COMMAND_GLOB_CMD_SOFT_RST 0x0080
+#define COMMAND_GLOB_CMD_SOFT_RST_lower 0x8280
+#define COMMAND_GLOB_CMD_SOFT_RST_upper 0x8200
+//Wanted Register Content: COMMAND_GLOB_CMD_FACT_CALIB_RESTORE 0x0040
+#define COMMAND_GLOB_CMD_FACT_CALIB_RESTORE_lower 0x8240
+#define COMMAND_GLOB_CMD_FACT_CALIB_RESTORE_upper 0x8200
+//Wanted Register Content: COMMAND_GLOB_CMD_FLASH_UPDT 0x0008
+#define COMMAND_GLOB_CMD_FLASH_UPDT_lower 0x8208
+#define COMMAND_GLOB_CMD_FLASH_UPDT_upper 0x8200
+//Wanted Register Content: COMMAND_GLOB_CMD_FLASH_TEST 0x0004
+#define COMMAND_GLOB_CMD_FLASH_TEST_lower 0x8204
+#define COMMAND_GLOB_CMD_FLASH_TEST_upper 0x8200
+//Wanted Register Content: COMMAND_GLOB_CMD_SELF_TST 0x0002
+#define COMMAND_GLOB_CMD_SELF_TST_lower 0x8202
+#define COMMAND_GLOB_CMD_SELF_TST_upper 0x8200
 
 
 //Function Declarations

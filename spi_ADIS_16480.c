@@ -4,6 +4,7 @@
  * Author: Raphael Nagel
  * Date: 04/June/2014
  */
+
 /*libsoc defines, etc (stolen from libsoc test files)*/
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,10 +24,13 @@
 #include "reg_diag_sts.h"
 #include "reg_glob_cmd.h"
 #include "reg_sys_e_flag.h"
+#include "reg_ekf_cnfg.h"
 
 /*Registers needed for the UWEsub's use of the - READ ADDRESSES unless specified*/ 
 //Page 0
 #define PROD_ID 0x7e00        // Product ID register which is stable and predefined to be 0x4060 = .16480 = 0b0100 0000 0110 0000
+#define PROD_ID_DEFAULT 0x4060
+
 
  /*Global Variables*/
 //extern static uint8_t tx[35], rx[35]; !!!!!!!!!!!!!!!!!CHECKME!!!!!!!!!!!!
@@ -36,21 +40,22 @@ uint8_t read_product_id(spi* spi_dev) {
   
   printf("ADIS16480: Reading Product ID\n");
     
-  tx[0] = PG0;    //Switch to page 0
-  tx[1] = PROD_ID;
-  tx[2] = 0x0000;
+  tx[0] = PG0;        //Switch to page 0
+  tx[1] = PROD_ID;    //Ask for the PROD_ID
+  tx[2] = PG0;       //change back to page 0 while register While getting the PROD_ID
 
   rx[0] = 0;
   rx[1] = 0;
   rx[2] = 0;
+ 
 
   libsoc_spi_rw(spi_dev, tx, rx, 6);
 
-  if (rx[2] != 0x4060){
-    printf("ADIS16480: wrong PROD_ID, rx[2]: 0x%x\n",rx[2]);
+  if (rx[2] != PROD_ID_DEFAULT){
+    printf("ADIS16480: wrong PROD_ID, rx[2]: 0x%x\n",rx[3]);
     return 0; // IMplement proper error message later
   }else{
-    printf("ADIS16480: correct PROD_ID: 0x%x \n",rx[2]);
+    printf("ADIS16480: correct PROD_ID: 0x%x \n",rx[3]);
     return 1; // IMplement proper error message later
   }
   
@@ -86,6 +91,8 @@ int main()
   if(status){
     status = read_self_test(spi_dev);
     status = read_error_flags(spi_dev);
+    status = read_adaptive_configuration(spi_dev);
+
   }
 
   libsoc_spi_free(spi_dev);
