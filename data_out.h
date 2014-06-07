@@ -8,7 +8,9 @@
 #ifndef _ADIS_16480_DATA_
 #define _ADIS_16480_DATA_
 
-#define YAW_ROLL_COUNT_TO_DEGREE  0.005493164
+#define YAW_ROLL_COUNT_TO_DEGREE  0.005493164 //180°/2^15counts
+#define LINEAR_ACC_COUNT_TO_g 0.0008
+#define LINEAR_VEL_COUNT_TO_mpsec 0.006103516	//200/2^15
 
 /*Bitmasks*/
 #define BITMASK_TEST_2s_NEG 0x8000
@@ -74,7 +76,9 @@
 
 /*Function Prototypes*/
 
- uint8_t read_euler_YPR_angles(spi*,  double*,  double*,  double*); //takes yaw, pitch, roll in this order
+uint8_t read_euler_YPR_angles(spi*,  double*,  double*,  double*); //takes yaw, pitch, roll in this order
+uint8_t read_linear_acceleration(spi* ,  double*,  double*,  double*);
+uint8_t read_linear_velocity(spi* ,  double*,  double*,  double*);
 
 
 #endif

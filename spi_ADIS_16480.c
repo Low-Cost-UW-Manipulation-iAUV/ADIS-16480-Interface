@@ -27,10 +27,7 @@
 #include "reg_ekf_cnfg.h"
 #include "data_out.h"
 
-/*Registers needed for the UWEsub's use of the - READ ADDRESSES unless specified*/ 
-//Page 0
-#define PROD_ID 0x7e00        // Product ID register which is stable and predefined to be 0x4060 = .16480 = 0b0100 0000 0110 0000
-#define PROD_ID_DEFAULT 0x4060
+
 
 
  /*Global Variables*/
@@ -64,11 +61,10 @@ uint8_t read_product_id(spi* spi_dev) {
 }
 
 
-
 int main()
 {
   int i;
-   double yaw, pitch,roll;
+   double x,y,z;
   libsoc_set_debug(1);
    
   uint8_t status;
@@ -94,11 +90,11 @@ int main()
   if(status){
     status = read_self_test(spi_dev);
     status = read_error_flags(spi_dev);
-
-  yaw = 0; 
-  libsoc_set_debug(0);
-  for(i=0;i<100000;i++)  
-    read_euler_YPR_angles(spi_dev, &yaw, &pitch, &roll);
+    sleep(2);
+    libsoc_set_debug(0);
+    for(i=0;i<100000;i++){  
+      read_linear_acceleration(spi_dev, &x, &y, &z);
+    }
   }
 
   libsoc_spi_free(spi_dev);

@@ -16,6 +16,11 @@ static uint16_t tx[35], rx[35];	//Predefine the rx and tx register
 #define SPI_DEVICE   1
 #define CHIP_SELECT  0
 
+/*Registers needed for the UWEsub's use of the - READ ADDRESSES unless specified*/ 
+//Page 0
+#define PROD_ID 0x7e00        // Product ID register which is stable and predefined to be 0x4060 = .16480 = 0b0100 0000 0110 0000
+#define PROD_ID_DEFAULT 0x4060
+
 //Bitmasks
 #define BITMASK_WRITE_REGISTER 0x0800     //Use this to | (OR) register addresses if you want to write to that register
 

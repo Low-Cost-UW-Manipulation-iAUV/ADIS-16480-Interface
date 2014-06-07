@@ -73,3 +73,108 @@ uint8_t read_euler_YPR_angles(spi* spi_dev,  double* yaw,  double* pitch,  doubl
 
 	return 1;
 }
+
+uint8_t read_linear_acceleration(spi* spi_dev,  double* x_acc,  double* y_acc,  double* z_acc) {
+	uint16_t x_acc_raw, y_acc_raw, z_acc_raw;
+	tx[0] = PG0;        //Switch to page 0
+	tx[1] = X_ACCL_OUT;    //Ask for Yaw
+	tx[2] = Y_ACCL_OUT;    //Ask for  Pitch and store Yaw
+	tx[3] = Z_ACCL_OUT;    //Ask for Roll and store pitch	
+	tx[4] = PG0;       //change back to page 0 while register While storing roll
+
+	rx[0] = 0;
+	rx[1] = 0;
+	rx[2] = 0;
+	rx[3] = 0;
+	rx[4] = 0;
+
+	libsoc_spi_rw(spi_dev, tx, rx, 10);
+
+	x_acc_raw = rx[2];
+	y_acc_raw = rx[3];
+	z_acc_raw = rx[4];
+
+/*Convert from 2s complement to decimal*/
+	if(x_acc_raw & BITMASK_TEST_2s_NEG){ //if negative 
+		x_acc_raw = ~x_acc_raw;		//
+		x_acc_raw = x_acc_raw + 1;
+		*x_acc = (-1)* ((double) x_acc_raw) * LINEAR_ACC_COUNT_TO_g;
+	}else{
+		*x_acc = (double) x_acc_raw * LINEAR_ACC_COUNT_TO_g;
+	}
+
+/*Convert from 2s complement to decimal*/
+	if(y_acc_raw & BITMASK_TEST_2s_NEG){ //if negative 
+		y_acc_raw = ~y_acc_raw;		//
+		y_acc_raw = y_acc_raw + 1;
+		*y_acc = (-1)* ((double) y_acc_raw) * LINEAR_ACC_COUNT_TO_g;
+	}else{
+		*y_acc = (double) y_acc_raw * LINEAR_ACC_COUNT_TO_g;
+	}
+
+/*Convert from 2s complement to decimal*/
+	if(z_acc_raw & BITMASK_TEST_2s_NEG){ //if negative 
+		z_acc_raw = ~z_acc_raw;		//
+		z_acc_raw = z_acc_raw + 1;
+		*z_acc = (-1)* ((double) z_acc_raw) * LINEAR_ACC_COUNT_TO_g;
+	}else{
+		*z_acc = (double) z_acc_raw * LINEAR_ACC_COUNT_TO_g;
+	}	
+
+	printf("Accelerations along axis: x: % 2.4fg, y: % 2.4f, z: % 2.4f \n",*x_acc,*y_acc,*z_acc);
+
+	return 1;
+}
+
+uint8_t read_linear_velocity(spi* spi_dev,  double* x_vel,  double* y_vel,  double* z_vel) {
+	uint16_t x_vel_raw, y_vel_raw, z_vel_raw;
+	tx[0] = PG0;        //Switch to page 0
+	tx[1] = X_DELTVEL_OUT;    //Ask for Yaw
+	tx[2] = Y_DELTVEL_OUT;    //Ask for  Pitch and store Yaw
+	tx[3] = Z_DELTVEL_OUT;    //Ask for Roll and store pitch	
+	tx[4] = PG0;       //change back to page 0 while register While storing roll
+
+	rx[0] = 0;
+	rx[1] = 0;
+	rx[2] = 0;
+	rx[3] = 0;
+	rx[4] = 0;
+
+	libsoc_spi_rw(spi_dev, tx, rx, 10);
+
+	x_vel_raw = rx[2];
+	y_vel_raw = rx[3];
+	z_vel_raw = rx[4];
+
+/*Convert from 2s complement to decimal*/
+	printf("velocities: x % 4x, y % 4x, z% 4x\n",x_vel_raw, y_vel_raw, z_vel_raw);
+	if(x_vel_raw & BITMASK_TEST_2s_NEG){ //if negative 
+		x_vel_raw = ~x_vel_raw;		//
+		x_vel_raw = x_vel_raw + 1;
+		*x_vel = (-1)* ((double) x_vel_raw) * LINEAR_VEL_COUNT_TO_mpsec;
+	}else{
+		*x_vel = (double) x_vel_raw * LINEAR_VEL_COUNT_TO_mpsec;
+	}
+
+/*Convert from 2s complement to decimal*/
+	if(y_vel_raw & BITMASK_TEST_2s_NEG){ //if negative 
+		y_vel_raw = ~y_vel_raw;		//
+		y_vel_raw = y_vel_raw + 1;
+		*y_vel = (-1)* ((double) y_vel_raw) * LINEAR_VEL_COUNT_TO_mpsec;
+	}else{
+		*y_vel = (double) y_vel_raw * LINEAR_VEL_COUNT_TO_mpsec;
+	}
+
+/*Convert from 2s complement to decimal*/
+	if(z_vel_raw & BITMASK_TEST_2s_NEG){ //if negative 
+		z_vel_raw = ~z_vel_raw;		//
+		z_vel_raw = z_vel_raw + 1;
+		*z_vel = (-1)* ((double) z_vel_raw) * LINEAR_VEL_COUNT_TO_mpsec;
+	}else{
+		*z_vel = (double) z_vel_raw * LINEAR_VEL_COUNT_TO_mpsec;
+	}	
+
+	//printf("Velocities along axis: x: % 3.15fm/s, y: % 3.15fm/s, z: % 3.15fm/s \n",*x_vel,*y_vel,*z_vel);
+
+	return 1;
+}
