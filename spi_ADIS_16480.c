@@ -25,6 +25,7 @@
 #include "reg_glob_cmd.h"
 #include "reg_sys_e_flag.h"
 #include "reg_ekf_cnfg.h"
+#include "data_out.h"
 
 /*Registers needed for the UWEsub's use of the - READ ADDRESSES unless specified*/ 
 //Page 0
@@ -66,6 +67,8 @@ uint8_t read_product_id(spi* spi_dev) {
 
 int main()
 {
+  int i;
+   double yaw, pitch,roll;
   libsoc_set_debug(1);
    
   uint8_t status;
@@ -91,8 +94,11 @@ int main()
   if(status){
     status = read_self_test(spi_dev);
     status = read_error_flags(spi_dev);
-    status = read_adaptive_configuration(spi_dev);
 
+  yaw = 0; 
+  libsoc_set_debug(0);
+  for(i=0;i<100000;i++)  
+    read_euler_YPR_angles(spi_dev, &yaw, &pitch, &roll);
   }
 
   libsoc_spi_free(spi_dev);
