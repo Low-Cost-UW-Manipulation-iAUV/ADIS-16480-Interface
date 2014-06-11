@@ -26,6 +26,7 @@
 #include "reg_sys_e_flag.h"
 #include "reg_ekf_cnfg.h"
 #include "data_out.h"
+#include "ADIS_interrupt_read.h"
 
 
 
@@ -92,9 +93,10 @@ int main()
     status = read_error_flags(spi_dev);
     sleep(2);
     libsoc_set_debug(0);
-    for(i=0;i<100000;i++){  
+  /*  for(i=0;i<100000;i++){  
       read_linear_acceleration(spi_dev, &x, &y, &z);
-    }
+    }*/
+    setup_interrupt_test();
   }
 
   libsoc_spi_free(spi_dev);
