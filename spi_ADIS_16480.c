@@ -28,8 +28,11 @@
 #include "data_out.h"
 #include "ADIS_interrupt_read.h"
 
+//IO stream
+//#include <iostream>
+//#include <fstream>
 
-
+//using namespace std;
 
  /*Global Variables*/
 //extern static uint8_t tx[35], rx[35]; !!!!!!!!!!!!!!!!!CHECKME!!!!!!!!!!!!
@@ -66,6 +69,7 @@ int main()
 {
   int i;
    double x,y,z;
+  uint16_t dec_rate_wanted = 1; //set the dec_rate
   libsoc_set_debug(1);
    
   uint8_t status;
@@ -93,11 +97,17 @@ int main()
     status = read_error_flags(spi_dev);
     sleep(2);
     libsoc_set_debug(0);
-  /*  for(i=0;i<100000;i++){  
-      read_linear_acceleration(spi_dev, &x, &y, &z);
-    }*/
-    setup_interrupt_test();
+    set_DEC_RATE(spi_dev,dec_rate_wanted);
+
+  //fstream myfile;
+  //myfile.open ("ADIS-velocity-11-jun-2014-17-29.txt");
+   for(i=0;i<100000;i++){  
+      read_linear_velocity(spi_dev, &x, &y, &z);
+      //myfile << x << ", " << y << "," << z << "\n";
+    }
   }
+  //myfile.close();
+
 
   libsoc_spi_free(spi_dev);
 

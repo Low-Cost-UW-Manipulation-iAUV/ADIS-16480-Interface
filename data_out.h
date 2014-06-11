@@ -14,8 +14,14 @@
 
 /*Bitmasks*/
 #define BITMASK_TEST_2s_NEG 0x8000
+#define BITMASK_WRITE_LOWER 0x00FF
+#define BITMASK_WRITE_UPPER 0xFF00
+
 
 /*Define the registers*/
+#define DEC_RATE_WRITE 0x8C00
+#define DEC_RATE_READ 0x0C00
+
 #define TEMP_OUT 0x0E00
 
 #define X_GYRO_LOW 0x1000
@@ -79,6 +85,6 @@
 uint8_t read_euler_YPR_angles(spi*,  double*,  double*,  double*); //takes yaw, pitch, roll in this order
 uint8_t read_linear_acceleration(spi* ,  double*,  double*,  double*);
 uint8_t read_linear_velocity(spi* ,  double*,  double*,  double*);
-
+uint8_t set_DEC_RATE(spi*, uint16_t);
 
 #endif

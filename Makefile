@@ -22,7 +22,7 @@ data_out.o: data_out.c data_out.h spi_ADIS_16480.h
 	gcc -c -I /usr/local/include data_out.c
 
 ADIS_interrupt_read.o: ADIS_interrupt_read.c ADIS_interrupt_read.h spi_ADIS_16480.h
-	gcc -c -I /usr/local/include ADIS_interrupt_read.c
+	gcc -c -I /usr/local/include ADIS_interrupt_read.c 
 
 
 clean: 

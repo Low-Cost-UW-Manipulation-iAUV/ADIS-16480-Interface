@@ -23,7 +23,7 @@ static uint16_t tx[35], rx[35];	//Predefine the rx and tx register
 
 //Bitmasks
 #define BITMASK_WRITE_REGISTER 0x0800     //Use this to | (OR) register addresses if you want to write to that register
-
+#define UPPER_DATA_BYTE 0x0100
 
 /*ADIS 16480 Register Pages*/
 
