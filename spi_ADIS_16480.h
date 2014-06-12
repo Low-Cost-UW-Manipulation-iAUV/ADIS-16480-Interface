@@ -10,7 +10,7 @@
 #define _ADIS_16480_PG_RG_DEFS_
 
 
-static uint16_t tx[35], rx[35];	//Predefine the rx and tx register
+static uint16_t tx_old[35], rx_old[35];	//Predefine the rx and tx register
 
 //Define the SPI line and chip select line 
 #define SPI_DEVICE   1
@@ -40,5 +40,36 @@ static uint16_t tx[35], rx[35];	//Predefine the rx and tx register
 #define PG10 0x800A // FIR Filter Bank C, Coefficient 60 to Coefficient 119
 #define PG11 0x800B // FIR Filter Bank D, Coefficient 0 to Coefficient 59
 #define PG12 0x800C // FIR Filter Bank D, Coefficient 60 to Coefficient 119
+
+class ADIS_16480_Interface{
+public:
+	ADIS_16480_Interface();
+	ADIS_16480_Interface(uint8_t , uint8_t , spi_mode , spi_bpw , uint32_t );
+
+	uint8_t read_product_id();
+	uint8_t read_self_test();
+	uint8_t read_adaptive_configuration();	
+	uint8_t close();
+
+	uint8_t do_EKF_reset();
+	uint8_t do_Reference_rotation_matrix_reset();
+	uint8_t do_Tare();
+	uint8_t do_Software_reset();
+	uint8_t do_Factory_calibration_restore();
+	uint8_t do_Flash_memory_update();
+	uint8_t do_Flash_memory_test();
+	uint8_t do_Self_test();
+	uint8_t read_error_flags();
+
+
+private:
+	uint8_t configure_initialise(uint8_t , uint8_t , spi_mode , spi_bpw , uint32_t );
+
+	spi* spi_dev ;
+	uint16_t tx[35], rx[35];	//Predefine the rx and tx register
+
+
+};
+
 
 #endif

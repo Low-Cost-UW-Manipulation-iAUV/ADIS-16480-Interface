@@ -37,8 +37,18 @@
  /*Global Variables*/
 //extern static uint8_t tx[35], rx[35]; !!!!!!!!!!!!!!!!!CHECKME!!!!!!!!!!!!
 
+ADIS_16480_Interface::ADIS_16480_Interface(){
+  configure_initialise(SPI_DEVICE, CHIP_SELECT, MODE_3, BITS_16, 11999999);
+  tx[0] = 0;
+  rx[0] = 0;
+}
 
-uint8_t read_product_id(spi* spi_dev) {
+ADIS_16480_Interface::ADIS_16480_Interface(uint8_t spi_device, uint8_t c_select_line, spi_mode spi_hw_mode, spi_bpw spi_bit_mode, uint32_t spi_frequency){
+  configure_initialise(spi_device, c_select_line, spi_hw_mode, spi_bit_mode, spi_frequency);
+  uint16_t tx[35], rx[35];
+}
+
+uint8_t ADIS_16480_Interface::read_product_id() {
   
   printf("ADIS16480: Reading Product ID\n");
     
@@ -64,17 +74,12 @@ uint8_t read_product_id(spi* spi_dev) {
   return 0;
 }
 
-
-int main()
-{
-  int i;
-   double x,y,z;
-  uint16_t dec_rate_wanted = 1; //set the dec_rate
+uint8_t ADIS_16480_Interface::configure_initialise(uint8_t spi_device, uint8_t c_select_line, spi_mode spi_hw_mode, spi_bpw spi_bit_mode, uint32_t spi_frequency){
   libsoc_set_debug(1);
    
   uint8_t status;
 
-  spi* spi_dev = libsoc_spi_init(SPI_DEVICE, CHIP_SELECT);
+  spi_dev = libsoc_spi_init(spi_device, c_select_line);
 
   if (!spi_dev)
   {
@@ -82,34 +87,50 @@ int main()
     return EXIT_FAILURE;
   }
 
-  libsoc_spi_set_mode(spi_dev, MODE_3); //ADIS16480 needs 16-bit mode
+  libsoc_spi_set_mode(spi_dev, spi_hw_mode); //ADIS16480 needs 16-bit mode
   libsoc_spi_get_mode(spi_dev);
   
-  libsoc_spi_set_speed(spi_dev, 11999999); //Seems to be limited to <12MHz ??! weird...
+  libsoc_spi_set_speed(spi_dev, spi_frequency); //Seems to be limited to <12MHz ??! weird...
   libsoc_spi_get_speed(spi_dev);
   
-  libsoc_spi_set_bits_per_word(spi_dev, BITS_16);
+  libsoc_spi_set_bits_per_word(spi_dev, spi_bit_mode);
   libsoc_spi_get_bits_per_word(spi_dev);
   
-  status = read_product_id(spi_dev);    //best testing - expect 0x4060
-  if(status){
-    status = read_self_test(spi_dev);
-    status = read_error_flags(spi_dev);
-    sleep(2);
+}
+
+uint8_t ADIS_16480_Interface::close(){
+  libsoc_spi_free(spi_dev);
+  return EXIT_SUCCESS;
+}
+
+
+
+
+int main()
+{
+  //int i;
+  //double x,y,z;
+  //uint16_t dec_rate_wanted = 1; //set the dec_rate
+  ADIS_16480_Interface my_adis;
+  uint8_t status;
+
+  status = my_adis.read_product_id();    //best testing - expect 0x4060
+ if(status){
+    status = my_adis.read_self_test();
+    //status = read_error_flags(spi_dev);
     libsoc_set_debug(0);
-    set_DEC_RATE(spi_dev,dec_rate_wanted);
+    //set_DEC_RATE(spi_dev,dec_rate_wanted);
 
   //fstream myfile;
   //myfile.open ("ADIS-velocity-11-jun-2014-17-29.txt");
-   for(i=0;i<100000;i++){  
+  /* for(i=0;i<100000;i++){  
       read_linear_velocity(spi_dev, &x, &y, &z);
       //myfile << x << ", " << y << "," << z << "\n";
     }
-  }
+  }*/
   //myfile.close();
+  }
 
-
-  libsoc_spi_free(spi_dev);
-
+  my_adis.close();
   return EXIT_SUCCESS;
 }

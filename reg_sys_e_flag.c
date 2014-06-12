@@ -22,7 +22,7 @@
 #include "reg_sys_e_flag.h"
 
 
-uint8_t read_error_flags(spi* spi_dev) {
+uint8_t ADIS_16480_Interface::read_error_flags() {
   
   uint16_t answer = 0;
 

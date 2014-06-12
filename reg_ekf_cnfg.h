@@ -26,7 +26,7 @@
 #define BITMASK_EKF_CNFG_GRAVRM				0x0001
 
 //Function Declarations
-uint8_t read_adaptive_configuration(spi*);
+//uint8_t read_adaptive_configuration(spi*);
 
 
 #endif

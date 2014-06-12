@@ -45,7 +45,7 @@
 
 
 //Function Declarations
-
+/*
 uint8_t do_EKF_reset(spi*);
 uint8_t do_Reference_rotation_matrix_reset(spi*);
 uint8_t do_Tare(spi*);
@@ -54,6 +54,6 @@ uint8_t do_Factory_calibration_restore(spi*);
 uint8_t do_Flash_memory_update(spi*);
 uint8_t do_Flash_memory_test(spi*);
 uint8_t do_Self_test(spi*);
-
+*/
 
 #endif

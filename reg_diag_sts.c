@@ -23,7 +23,7 @@
 #include "spi_ADIS_16480.h"
 #include "reg_diag_sts.h"
 
-uint8_t read_self_test(spi* spi_dev) {
+uint8_t ADIS_16480_Interface::read_self_test() {
 
   uint16_t answer = 0;
 

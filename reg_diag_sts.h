@@ -34,7 +34,7 @@
 
 //Function Declarations
 
-uint8_t read_self_test(spi*);
+//uint8_t read_self_test(spi*);
 
 
 #endif

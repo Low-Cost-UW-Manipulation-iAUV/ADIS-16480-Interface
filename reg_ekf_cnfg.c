@@ -24,7 +24,7 @@
 #include "reg_ekf_cnfg.h"
 
 
-uint8_t read_adaptive_configuration(spi* spi_dev) {
+uint8_t ADIS_16480_Interface::read_adaptive_configuration() {
 	uint16_t answer = 0;
 
 	printf("ADIS16480: EKF_CNFG - Reading Status\n");

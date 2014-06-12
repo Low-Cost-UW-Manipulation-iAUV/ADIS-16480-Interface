@@ -24,7 +24,7 @@
 #include "reg_glob_cmd.h"
 
 
-uint8_t do_EKF_reset(spi* spi_dev) {
+uint8_t ADIS_16480_Interface::do_EKF_reset() {
 
 tx[0] = PG3;    //Switch to page 3
 tx[1] = COMMAND_GLOB_CMD_EKF_RST_lower;
@@ -37,7 +37,7 @@ printf("ADIS16480: GLOB_CMD - EKF reset started - wait 416ms\n");
 return 1;
 }
 
-uint8_t do_Reference_rotation_matrix_reset(spi* spi_dev) {
+uint8_t ADIS_16480_Interface::do_Reference_rotation_matrix_reset() {
 
 tx[0] = PG3;    //Switch to page 3
 tx[1] = COMMAND_GLOB_CMD_REF_ROT_RST_lower;
@@ -50,7 +50,7 @@ printf("ADIS16480: GLOB_CMD - Reference Rotation Matrix resetted - wait 1 sample
 return 1;
 }
 
-uint8_t do_Tare(spi* spi_dev) {
+uint8_t ADIS_16480_Interface::do_Tare() {
 
 tx[0] = PG3;    //Switch to page 3
 tx[1] = COMMAND_GLOB_CMD_TARE_lower;
@@ -63,7 +63,7 @@ printf("ADIS16480: GLOB_CMD - TARE done - Was the sensor stable, flat and undist
 return 1;
 }
 
-uint8_t do_Software_reset(spi* spi_dev) {
+uint8_t ADIS_16480_Interface::do_Software_reset() {
 
 tx[0] = PG3;    //Switch to page 3
 tx[1] = COMMAND_GLOB_CMD_SOFT_RST_lower;
@@ -75,7 +75,7 @@ printf("ADIS16480: GLOB_CMD - Software reset started - wait 1.8s \n");
 
 return 1;
 }
-uint8_t do_Factory_calibration_restore(spi* spi_dev) {
+uint8_t ADIS_16480_Interface::do_Factory_calibration_restore() {
 
 tx[0] = PG3;    //Switch to page 3
 tx[1] = COMMAND_GLOB_CMD_FACT_CALIB_RESTORE_lower;
@@ -87,7 +87,7 @@ printf("ADIS16480: GLOB_CMD - Factory Calibration restore started - wait 1 sampl
 
 return 1;
 }
-uint8_t do_Flash_memory_update(spi* spi_dev) {
+uint8_t ADIS_16480_Interface::do_Flash_memory_update() {
 
 tx[0] = PG3;    //Switch to page 3
 tx[1] = COMMAND_GLOB_CMD_FLASH_UPDT_lower;
@@ -99,7 +99,7 @@ printf("ADIS16480: GLOB_CMD - Flash Memory update started - wait 1.1s\n");
 
 return 1;
 }
-uint8_t do_Flash_memory_test(spi* spi_dev) {
+uint8_t ADIS_16480_Interface::do_Flash_memory_test() {
 
 tx[0] = PG3;    //Switch to page 3
 tx[1] = COMMAND_GLOB_CMD_EKF_RST_lower;
@@ -111,7 +111,7 @@ printf("ADIS16480: GLOB_CMD - Flash memory test started - wait 53ms\n");
 
 return 1;
 }
-uint8_t do_Self_test(spi* spi_dev) {
+uint8_t ADIS_16480_Interface::do_Self_test() {
 
 tx[0] = PG3;    //Switch to page 3
 tx[1] = COMMAND_GLOB_CMD_EKF_RST_lower;

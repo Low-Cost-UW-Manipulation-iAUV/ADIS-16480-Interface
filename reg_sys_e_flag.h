@@ -32,7 +32,7 @@
 
 /*Functions*/
 
-uint8_t read_error_flags(spi* );
+//uint8_t read_error_flags(spi* );
 
 
 
