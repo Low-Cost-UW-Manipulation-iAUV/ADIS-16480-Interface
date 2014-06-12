@@ -23,25 +23,25 @@
 #include "data_out.h"
 
 
-uint8_t read_euler_YPR_angles(spi* spi_dev,  double* yaw,  double* pitch,  double* roll) {
+uint8_t ADIS_16480_Interface::read_euler_YPR_angles(double* yaw,  double* pitch,  double* roll) {
 	uint16_t yaw_raw, pitch_raw, roll_raw;
-	tx_old[0] = PG0;        //Switch to page 0
-	tx_old[1] = YAW_C32_OUT;    //Ask for Yaw
-	tx_old[2] = PITCH_C31_OUT;    //Ask for  Pitch and store Yaw
-	tx_old[3] = ROLL_C23_OUT;    //Ask for Roll and store pitch	
-	tx_old[4] = PG0;       //change back to page 0 while register While storing roll
+	tx[0] = PG0;        //Switch to page 0
+	tx[1] = YAW_C32_OUT;    //Ask for Yaw
+	tx[2] = PITCH_C31_OUT;    //Ask for  Pitch and store Yaw
+	tx[3] = ROLL_C23_OUT;    //Ask for Roll and store pitch	
+	tx[4] = PG0;       //change back to page 0 while register While storing roll
 
-	rx_old[0] = 0;
-	rx_old[1] = 0;
-	rx_old[2] = 0;
-	rx_old[3] = 0;
-	rx_old[4] = 0;
+	rx[0] = 0;
+	rx[1] = 0;
+	rx[2] = 0;
+	rx[3] = 0;
+	rx[4] = 0;
 
-	libsoc_spi_rw(spi_dev, tx_old, rx_old, 10);
+	libsoc_spi_rw(spi_dev, tx, rx, 10);
 
-	yaw_raw = rx_old[2];
-	pitch_raw = rx_old[3];
-	roll_raw = rx_old[4];
+	yaw_raw = rx[2];
+	pitch_raw = rx[3];
+	roll_raw = rx[4];
 
 /*Convert from 2s complement to decimal*/
 	if(yaw_raw & BITMASK_TEST_2s_NEG){ //if negative 
@@ -75,25 +75,25 @@ uint8_t read_euler_YPR_angles(spi* spi_dev,  double* yaw,  double* pitch,  doubl
 	return 1;
 }
 
-uint8_t read_linear_acceleration(spi* spi_dev,  double* x_acc,  double* y_acc,  double* z_acc) {
+uint8_t ADIS_16480_Interface::read_linear_acceleration(double* x_acc,  double* y_acc,  double* z_acc) {
 	uint16_t x_acc_raw, y_acc_raw, z_acc_raw;
-	tx_old[0] = PG0;        //Switch to page 0
-	tx_old[1] = X_ACCL_OUT;    //Ask for Yaw
-	tx_old[2] = Y_ACCL_OUT;    //Ask for  Pitch and store Yaw
-	tx_old[3] = Z_ACCL_OUT;    //Ask for Roll and store pitch	
-	tx_old[4] = PG0;       //change back to page 0 while register While storing roll
+	tx[0] = PG0;        //Switch to page 0
+	tx[1] = X_ACCL_OUT;    //Ask for Yaw
+	tx[2] = Y_ACCL_OUT;    //Ask for  Pitch and store Yaw
+	tx[3] = Z_ACCL_OUT;    //Ask for Roll and store pitch	
+	tx[4] = PG0;       //change back to page 0 while register While storing roll
 
-	rx_old[0] = 0;
-	rx_old[1] = 0;
-	rx_old[2] = 0;
-	rx_old[3] = 0;
-	rx_old[4] = 0;
+	rx[0] = 0;
+	rx[1] = 0;
+	rx[2] = 0;
+	rx[3] = 0;
+	rx[4] = 0;
 
-	libsoc_spi_rw(spi_dev, tx_old, rx_old, 10);
+	libsoc_spi_rw(spi_dev, tx, rx, 10);
 
-	x_acc_raw = rx_old[2];
-	y_acc_raw = rx_old[3];
-	z_acc_raw = rx_old[4];
+	x_acc_raw = rx[2];
+	y_acc_raw = rx[3];
+	z_acc_raw = rx[4];
 
 /*Convert from 2s complement to decimal*/
 	if(x_acc_raw & BITMASK_TEST_2s_NEG){ //if negative 
@@ -127,27 +127,27 @@ uint8_t read_linear_acceleration(spi* spi_dev,  double* x_acc,  double* y_acc,  
 	return 1;
 }
 
-uint8_t read_linear_velocity(spi* spi_dev,  double* x_vel,  double* y_vel,  double* z_vel) {
+uint8_t ADIS_16480_Interface::read_linear_velocity(double* x_vel,  double* y_vel,  double* z_vel) {
 	uint16_t x_vel_raw, y_vel_raw, z_vel_raw;
-	tx_old[0] = PG0;        //Switch to page 0
-	tx_old[1] = X_DELTVEL_OUT;    //Ask for Yaw
-	tx_old[2] = Y_DELTVEL_OUT;    //Ask for  Pitch and store Yaw
-	tx_old[3] = Z_DELTVEL_OUT;    //Ask for Roll and store pitch	
-	tx_old[4] = PG0;       //change back to page 0 while register While storing roll
+	tx[0] = PG0;        //Switch to page 0
+	tx[1] = X_DELTVEL_OUT;    //Ask for Yaw
+	tx[2] = Y_DELTVEL_OUT;    //Ask for  Pitch and store Yaw
+	tx[3] = Z_DELTVEL_OUT;    //Ask for Roll and store pitch	
+	tx[4] = PG0;       //change back to page 0 while register While storing roll
 
-	rx_old[0] = 0;
-	rx_old[1] = 0;
-	rx_old[2] = 0;
-	rx_old[3] = 0;
-	rx_old[4] = 0;
+	rx[0] = 0;
+	rx[1] = 0;
+	rx[2] = 0;
+	rx[3] = 0;
+	rx[4] = 0;
 
-	libsoc_spi_rw(spi_dev, tx_old, rx_old, 10);
+	libsoc_spi_rw(spi_dev, tx, rx, 10);
 
-	x_vel_raw = rx_old[2];
-	y_vel_raw = rx_old[3];
-	z_vel_raw = rx_old[4];
+	x_vel_raw = rx[2];
+	y_vel_raw = rx[3];
+	z_vel_raw = rx[4];
 
-/*Convert from 2s complement to decimal*/
+//Convert from 2s complement to decimal/
 	printf("velocities: x 0x%04x, y 0x%04x, z 0x%04x\n",x_vel_raw, y_vel_raw, z_vel_raw);
 	if(x_vel_raw & BITMASK_TEST_2s_NEG){ //if negative 
 		x_vel_raw = ~x_vel_raw;		//
@@ -157,7 +157,7 @@ uint8_t read_linear_velocity(spi* spi_dev,  double* x_vel,  double* y_vel,  doub
 		*x_vel = (double) x_vel_raw * LINEAR_VEL_COUNT_TO_mpsec;
 	}
 
-/*Convert from 2s complement to decimal*/
+//Convert from 2s complement to decimal/
 	if(y_vel_raw & BITMASK_TEST_2s_NEG){ //if negative 
 		y_vel_raw = ~y_vel_raw;		//
 		y_vel_raw = y_vel_raw + 1;
@@ -166,7 +166,7 @@ uint8_t read_linear_velocity(spi* spi_dev,  double* x_vel,  double* y_vel,  doub
 		*y_vel = (double) y_vel_raw * LINEAR_VEL_COUNT_TO_mpsec;
 	}
 
-/*Convert from 2s complement to decimal*/
+//Convert from 2s complement to decimal
 	if(z_vel_raw & BITMASK_TEST_2s_NEG){ //if negative 
 		z_vel_raw = ~z_vel_raw;		//
 		z_vel_raw = z_vel_raw + 1;
@@ -180,26 +180,26 @@ uint8_t read_linear_velocity(spi* spi_dev,  double* x_vel,  double* y_vel,  doub
 	return 1;
 }
 
-uint8_t set_DEC_RATE(spi* spi_dev, uint16_t dec_rate) {
+uint8_t ADIS_16480_Interface::set_DEC_RATE(uint16_t dec_rate) {
 
-	tx_old[0] = PG3;    //Switch to page 3
-	tx_old[1] = DEC_RATE_READ;    //Switch to page 0
-	tx_old[2] = DEC_RATE_WRITE | (dec_rate & BITMASK_WRITE_LOWER) ;	//write the lower data byte first
-	tx_old[3] = (DEC_RATE_WRITE + UPPER_DATA_BYTE) | (dec_rate & BITMASK_WRITE_UPPER) ;	//then the upper byte
-	tx_old[4] = DEC_RATE_READ;    //Switch to page 0
-	tx_old[5] = PG0;    //Switch to page 0
+	tx[0] = PG3;    //Switch to page 3
+	tx[1] = DEC_RATE_READ;    //Switch to page 0
+	tx[2] = DEC_RATE_WRITE | (dec_rate & BITMASK_WRITE_LOWER) ;	//write the lower data byte first
+	tx[3] = (DEC_RATE_WRITE + UPPER_DATA_BYTE) | (dec_rate & BITMASK_WRITE_UPPER) ;	//then the upper byte
+	tx[4] = DEC_RATE_READ;    //Switch to page 0
+	tx[5] = PG0;    //Switch to page 0
 
-	rx_old[0] = 0;
-	rx_old[1] = 0;
-	rx_old[2] = 0;
-	rx_old[3] = 0;
-	rx_old[4] = 0;
-	rx_old[5] = 0;
+	rx[0] = 0;
+	rx[1] = 0;
+	rx[2] = 0;
+	rx[3] = 0;
+	rx[4] = 0;
+	rx[5] = 0;
 
-	printf("ADIS16480: setting DEC_RATE to: %d, tx2: %x, tx3: %x\n",dec_rate, tx_old[2], tx_old[3]);
+	printf("ADIS16480: setting DEC_RATE to: %d, tx2: %x, tx3: %x\n",dec_rate, tx[2], tx[3]);
 
-	libsoc_spi_rw(spi_dev, tx_old, rx_old, 12);
-	printf("ADIS16480: DEC_RATE was: %d\n",rx_old[2]);
-	printf("ADIS16480: DEC_RATE set to: %d\n",rx_old[5]);
+	libsoc_spi_rw(spi_dev, tx, rx, 12);
+	printf("ADIS16480: DEC_RATE was: %d\n",rx[2]);
+	printf("ADIS16480: DEC_RATE set to: %d\n",rx[5]);
 	return 1;
 }

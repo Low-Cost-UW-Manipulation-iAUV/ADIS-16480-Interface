@@ -29,13 +29,11 @@
 #include "ADIS_interrupt_read.h"
 
 //IO stream
-//#include <iostream>
-//#include <fstream>
+#include <iostream>
+#include <fstream>
 
-//using namespace std;
+using namespace std;
 
- /*Global Variables*/
-//extern static uint8_t tx[35], rx[35]; !!!!!!!!!!!!!!!!!CHECKME!!!!!!!!!!!!
 
 ADIS_16480_Interface::ADIS_16480_Interface(){
   configure_initialise(SPI_DEVICE, CHIP_SELECT, MODE_3, BITS_16, 11999999);
@@ -64,10 +62,10 @@ uint8_t ADIS_16480_Interface::read_product_id() {
   libsoc_spi_rw(spi_dev, tx, rx, 6);
 
   if (rx[2] != PROD_ID_DEFAULT){
-    printf("ADIS16480: wrong PROD_ID, rx[2]: 0x%x\n",rx[3]);
+    printf("ADIS16480: wrong PROD_ID, rx[2]: 0x%x\n",rx[2]);
     return 0; // IMplement proper error message later
   }else{
-    printf("ADIS16480: correct PROD_ID: 0x%x \n",rx[3]);
+    printf("ADIS16480: correct PROD_ID: 0x%x \n",rx[2]);
     return 1; // IMplement proper error message later
   }
   
@@ -108,8 +106,8 @@ uint8_t ADIS_16480_Interface::close(){
 
 int main()
 {
-  //int i;
-  //double x,y,z;
+  int i;
+  double x,y,z;
   //uint16_t dec_rate_wanted = 1; //set the dec_rate
   ADIS_16480_Interface my_adis;
   uint8_t status;
@@ -117,18 +115,19 @@ int main()
   status = my_adis.read_product_id();    //best testing - expect 0x4060
  if(status){
     status = my_adis.read_self_test();
-    //status = read_error_flags(spi_dev);
+    status = my_adis.read_error_flags();
+    //my_adis.do_Software_reset();
     libsoc_set_debug(0);
-    //set_DEC_RATE(spi_dev,dec_rate_wanted);
+    //my_adis.set_DEC_RATE(spi_dev,dec_rate_wanted);
 
-  //fstream myfile;
-  //myfile.open ("ADIS-velocity-11-jun-2014-17-29.txt");
-  /* for(i=0;i<100000;i++){  
-      read_linear_velocity(spi_dev, &x, &y, &z);
-      //myfile << x << ", " << y << "," << z << "\n";
+    fstream myfile;
+    myfile.open ("ADIS-velocity-11-jun-2014-17-29.txt");
+    for(i=0;i<100000;i++){  
+      my_adis.read_linear_velocity(&x, &y, &z);
+      myfile << x << ", " << y << "," << z << "\n";
     }
-  }*/
-  //myfile.close();
+  
+    myfile.close();
   }
 
   my_adis.close();

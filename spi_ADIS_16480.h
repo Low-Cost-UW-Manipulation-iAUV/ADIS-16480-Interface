@@ -61,6 +61,13 @@ public:
 	uint8_t do_Self_test();
 	uint8_t read_error_flags();
 
+	uint8_t read_euler_YPR_angles(double* ,  double* ,  double* );
+	uint8_t read_linear_acceleration(double* ,  double* ,  double* );
+	uint8_t read_linear_velocity(double* ,  double* ,  double* );
+	uint8_t set_DEC_RATE(uint16_t );
+
+
+
 
 private:
 	uint8_t configure_initialise(uint8_t , uint8_t , spi_mode , spi_bpw , uint32_t );
