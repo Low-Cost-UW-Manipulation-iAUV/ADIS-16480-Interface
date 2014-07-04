@@ -80,11 +80,6 @@
 
 #define C33_OUT 0x7000
 
-/*Function Prototypes*/
-/*
-uint8_t read_euler_YPR_angles(spi*,  double*,  double*,  double*); //takes yaw, pitch, roll in this order
-uint8_t read_linear_acceleration(spi* ,  double*,  double*,  double*);
-uint8_t read_linear_velocity(spi* ,  double*,  double*,  double*);
-uint8_t set_DEC_RATE(spi*, uint16_t);*/
+
 
 #endif
