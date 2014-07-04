@@ -373,24 +373,3 @@ uint8_t ADIS_16480_Interface::set_DEC_RATE(uint16_t dec_rate) {
 	return 1;
 }
 
-void ADIS_16480_Interface::print_to_file(){
-
-	if(print_ypr_flag){
-		file_to_print_to << yaw << "," << pitch << "," << roll << ","; 
-	}
-	if(print_linear_accelerations_flag){
-		file_to_print_to << x_acceleration << "," << y_acceleration << "," << z_acceleration << ",";
-	 	}
-	if(print_linear_velocities_flag){
-		file_to_print_to << x_velocity << "," << y_velocity << "," << z_velocity << ",";
-	}
-	if(print_linear_position_flag){
-		file_to_print_to << x_position << "," << y_position << "," << z_position << ",";
-	}
-	if(print_angular_velocities_flag){
-
-	}
-
-	file_to_print_to << "\n";
-
-};

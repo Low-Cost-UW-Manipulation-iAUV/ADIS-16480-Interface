@@ -81,6 +81,28 @@ void ADIS_16480_Interface::print_data_file(bool ypr, bool linear_accelerations, 
   }
 };
 
+void ADIS_16480_Interface::print_to_file(){
+
+  if(print_ypr_flag){
+    file_to_print_to << yaw << "," << pitch << "," << roll << ","; 
+  }
+  if(print_linear_accelerations_flag){
+    file_to_print_to << x_acceleration << "," << y_acceleration << "," << z_acceleration << ",";
+    }
+  if(print_linear_velocities_flag){
+    file_to_print_to << x_velocity << "," << y_velocity << "," << z_velocity << ",";
+  }
+  if(print_linear_position_flag){
+    file_to_print_to << x_position << "," << y_position << "," << z_position << ",";
+  }
+  if(print_angular_velocities_flag){
+
+  }
+
+  file_to_print_to << "\n";
+
+};
+
 //Initialises the ADIS with the settings needed for my BBB-custom_board-ADIS setup
 ADIS_16480_Interface::ADIS_16480_Interface(){
   configure_initialise(SPI_DEVICE, CHIP_SELECT, MODE_3, BITS_16, 11999999);
