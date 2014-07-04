@@ -4,7 +4,7 @@
  * Author: Raphael Nagel
  * Date: 04/June/2014
  */
-#define FILENAME_TO_PRINT_DATA_TO "ADIS-acceleration-04-Jul-2014-15-43.txt"
+#define FILENAME_TO_PRINT_DATA_TO "ADIS-Data-04-Jul-2014-17-55.txt"
 
 
 
@@ -42,6 +42,7 @@ void ADIS_16480_Interface::print_data_console(bool yesorno){
 
 void ADIS_16480_Interface::print_data_file(bool ypr, bool linear_accelerations, bool linear_velocities, bool linear_position, bool angular_velocities){
   if(ypr|linear_accelerations|linear_velocities|angular_velocities){
+
     print_data_to_file_flag = 1;
     print_ypr_flag = ypr;
     print_linear_accelerations_flag = linear_accelerations;
@@ -50,7 +51,25 @@ void ADIS_16480_Interface::print_data_file(bool ypr, bool linear_accelerations, 
     print_angular_velocities_flag = angular_velocities;
 
     file_to_print_to.open(FILENAME_TO_PRINT_DATA_TO);
-  }else{
+  if(print_ypr_flag){
+    file_to_print_to << "yaw, pitch, roll, "; 
+  }
+  if(print_linear_accelerations_flag){
+    file_to_print_to << "x_acceleration_linear, y_acceleration_linear, z_acceleration_linear, "; 
+    }
+  if(print_linear_velocities_flag){
+    file_to_print_to << "x_velocity_linear, y_velocity_linear, z_velocity_linear, "; 
+  }
+  if(print_linear_position_flag){
+    file_to_print_to << "x_position_linear, y_position_linear, z_position_linear, "; 
+  }
+  if(print_angular_velocities_flag){
+    file_to_print_to << "x_velocity_angular, y_velocity_angular, z_velocity_angular, "; 
+
+  }
+  file_to_print_to << "\n";  
+}else{
+
     print_data_to_console_flag = 0;
     print_data_to_file_flag = 0;
     print_ypr_flag = 0;

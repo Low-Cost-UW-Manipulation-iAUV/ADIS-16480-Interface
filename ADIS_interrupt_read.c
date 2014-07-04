@@ -44,6 +44,7 @@ int ADIS_16480_Interface::job_for_callback(){
   
   read_euler_YPR_angles();
   read_linear_acceleration();
+  read_linear_velocity();
   if(print_data_to_file_flag){
     print_to_file();
   }

@@ -46,7 +46,7 @@ static uint16_t tx_old[35], rx_old[35];	//Predefine the rx and tx register
 #define PROD_ID_DEFAULT 0x4060
 
 //Bitmasks
-#define BITMASK_WRITE_REGISTER 0x8000     //Use this to | (OR) register addresses if you want to write to that register
+#define BITMASK_WRITE_REGISTER 0x8000     //Use this to & (AND) register addresses if you want to write to that register
 #define UPPER_DATA_BYTE 0x0100
 #define BITMASK_WRITE_LOWER_8_BITS 0x00FF
 #define BITMASK_WRITE_UPPER_8_BITS_BEFORE_SHIFT 0xFF00
@@ -109,12 +109,8 @@ public:
 
 	void print_data_console(bool);
 	void print_data_file(bool, bool, bool, bool, bool);
-	void print_to_file();
 
-	uint8_t callback_to_wrapper();
 	int job_for_callback();
-
-
 
 
 private:
@@ -126,8 +122,9 @@ private:
 	bool print_linear_velocities_flag;
 	bool print_linear_position_flag;
 	bool print_angular_velocities_flag;
-  	fstream file_to_print_to;
-
+  	
+	void print_to_file();
+  	ofstream file_to_print_to;
 
 	spi* spi_dev ;
 	uint16_t tx[35], rx[35];	//Predefine the rx and tx register
