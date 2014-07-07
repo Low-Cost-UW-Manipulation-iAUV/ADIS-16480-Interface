@@ -53,7 +53,8 @@ uint8_t ADIS_16480_Interface::set_bits(uint16_t page, uint16_t base_address, uin
 
   register_content_before = rx[2];
   printf("ADIS16480 - Register Write - Before: 0x%x\n",register_content_before);
-  
+  printf("ADIS16480 - Register Write - Writing new content and reading it back...\n");
+
   register_content_after = register_content_before | bits_to_set;
 
 

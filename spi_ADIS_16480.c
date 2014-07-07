@@ -55,16 +55,16 @@ void ADIS_16480_Interface::print_data_file(bool ypr, bool linear_accelerations, 
     file_to_print_to << "yaw, pitch, roll, "; 
   }
   if(print_linear_accelerations_flag){
-    file_to_print_to << "x_acceleration_linear, y_acceleration_linear, z_acceleration_linear, "; 
+    file_to_print_to << "x acceleration linear, y acceleration linear, z acceleration linear, "; 
     }
   if(print_linear_velocities_flag){
-    file_to_print_to << "x_velocity_linear, y_velocity_linear, z_velocity_linear, "; 
+    file_to_print_to << "x velocity linear, y velocity linear, z velocity linear, "; 
   }
   if(print_linear_position_flag){
-    file_to_print_to << "x_position_linear, y_position_linear, z_position_linear, "; 
+    file_to_print_to << "x position linear, y position linear, z position linear, "; 
   }
   if(print_angular_velocities_flag){
-    file_to_print_to << "x_velocity_angular, y_velocity_angular, z_velocity_angular, "; 
+    file_to_print_to << "x velocity angular, y velocity angular, z velocity angular, "; 
 
   }
   file_to_print_to << "\n";  
@@ -242,7 +242,7 @@ int main()
   wrapper_for_c_library_single_instance_callback::setObj(my_adis) ;
   
   my_adis.print_data_console(ON);
-  my_adis.print_data_file(OFF, ON, ON, ON, OFF);
+  my_adis.print_data_file(OFF, ON, ON, OFF, OFF);
 
   status = my_adis.read_product_id();    //best testing - expect 0x4060
   if(status){
@@ -250,13 +250,12 @@ int main()
     status = my_adis.read_error_flags();
     libsoc_set_debug(0);
     //my_adis.set_DEC_RATE(spi_dev,dec_rate_wanted);
-    my_adis.set_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_GRAVRM);
+    my_adis.set_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL);
     my_adis.print_data_console(OFF);
     my_adis.setup_interrupt_ADIS();
-    for(i=0;i<100000;i++){  
-      //my_adis.read_linear_velocity(&x, &y, &z);
-      usleep(10);
-    }
+
+    sleep(10);
+
 
     my_adis.disable_Interrupt_ADIS();
   }
