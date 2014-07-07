@@ -101,6 +101,8 @@ public:
 	uint8_t read_linear_velocity(double* ,  double* ,  double* );
 	uint8_t read_linear_velocity();
 	uint8_t set_DEC_RATE(uint16_t );
+	uint8_t read_YPR_lin_Acc(void);
+	uint8_t read_YPR_lin_Vel(void);
 
 	int setup_interrupt_test(void);
 	int setup_interrupt_ADIS(void);
