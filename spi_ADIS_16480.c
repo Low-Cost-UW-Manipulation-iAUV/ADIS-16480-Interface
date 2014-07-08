@@ -242,7 +242,7 @@ int main()
   wrapper_for_c_library_single_instance_callback::setObj(my_adis) ;
   
   my_adis.print_data_console(ON);
-  my_adis.print_data_file(OFF, OFF, OFF, OFF, OFF);
+  my_adis.print_data_file(ON, ON, OFF, OFF, OFF);
 
   status = my_adis.read_product_id();    //best testing - expect 0x4060
   if(status){
