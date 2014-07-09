@@ -1,5 +1,5 @@
 /*
- * ADIS 16480 GLOB_CMD Data Read Interface Source
+ * ADIS 16480  Data Out Interface Source
  * This SPI interface for the ADIS16480 IMU is based on libsoc library by Jack Mitchell
  * Author: Raphael Nagel
  * Date: 04/June/2014

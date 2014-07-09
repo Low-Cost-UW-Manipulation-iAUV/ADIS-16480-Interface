@@ -75,15 +75,26 @@ public:
 	ADIS_16480_Interface();
 	ADIS_16480_Interface(uint8_t , uint8_t , spi_mode , spi_bpw , uint32_t );
 
+//spi_ADIS_16480.c/h
 	uint8_t read_product_id();
-	uint8_t read_self_test();
-	uint8_t read_adaptive_configuration();	
 	uint8_t close();
 
 	uint8_t set_bits(uint16_t , uint16_t , uint16_t );
 	uint8_t clear_bits(uint16_t, uint16_t, uint16_t);
 	uint8_t write_word(uint16_t, uint16_t, uint16_t );
 
+	void print_data_console(bool);
+	void print_data_file(bool, bool, bool, bool, bool);
+
+//reg_diag_sts.c/.h
+	uint8_t read_self_test();
+
+//reg_ekf_cnfg.c/.h
+	uint8_t read_adaptive_configuration();	
+//reg_sys_e_flag.c/.h
+	uint8_t read_error_flags();
+
+//reg_glob_cmd.c/.h
 	uint8_t do_EKF_reset();
 	uint8_t do_Reference_rotation_matrix_reset();
 	uint8_t do_Tare();
@@ -92,8 +103,8 @@ public:
 	uint8_t do_Flash_memory_update();
 	uint8_t do_Flash_memory_test();
 	uint8_t do_Self_test();
-	uint8_t read_error_flags();
 
+//data_out.c/h
 	uint8_t read_euler_YPR_angles(double* ,  double* ,  double* );
 	uint8_t read_euler_YPR_angles();
 	uint8_t read_linear_acceleration(double* ,  double* ,  double* );
@@ -104,15 +115,18 @@ public:
 	uint8_t read_YPR_lin_Acc(void);
 	uint8_t read_YPR_lin_Vel(void);
 
-	int setup_interrupt_test(void);
+//HR_data_out.c/h data_out.h
+	uint8_t HR_read_YPR_lin_Acc(void);
+	uint8_t HR_read_YPR_lin_Vel(void);	
+
+//ADIS_interrupt_read.c/h
 	int setup_interrupt_ADIS(void);
 	int disable_Interrupt_ADIS(void);
-
-
-	void print_data_console(bool);
-	void print_data_file(bool, bool, bool, bool, bool);
-
 	int job_for_callback();
+
+
+
+
 
 
 private:
@@ -125,6 +139,7 @@ private:
 	bool print_linear_position_flag;
 	bool print_angular_velocities_flag;
   	
+//spi_ADIS_16480.c/h
 	void print_to_file();
   	ofstream file_to_print_to;
 

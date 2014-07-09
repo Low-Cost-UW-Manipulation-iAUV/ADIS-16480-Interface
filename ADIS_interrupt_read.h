@@ -13,9 +13,4 @@
 						--> 32bit offset to get to 2nd controller:
 						17+32 = 49*/
 
-#define MOVING_AVERAGE_WINDOW_SIZE 500	//Used to verify that we can catch all ADIS interrupts
-
-static int interrupt_count = 0;
-int callback_test();
-//int setup_interrupt_test(void);
 #endif
