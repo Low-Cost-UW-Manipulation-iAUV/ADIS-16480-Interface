@@ -250,6 +250,7 @@ int main()
     status = my_adis.read_error_flags();
     libsoc_set_debug(0);
     //my_adis.set_DEC_RATE(spi_dev,dec_rate_wanted);
+    // put the ADIS in Body Frame mode
     my_adis.set_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL);
     my_adis.print_data_console(OFF);
     my_adis.setup_interrupt_ADIS();
