@@ -32,6 +32,11 @@
 int ADIS_16480_Interface::job_for_callback(){
   
   HR_read_YPR_lin_Acc();
+
+  if(interrupt_detection_enable_flag){
+    detect_missed_IR();
+  }
+
   if(print_data_to_file_flag){
     print_to_file();
   }
@@ -105,7 +110,7 @@ int ADIS_16480_Interface::setup_interrupt_ADIS(void)
   // Setup callback
   libsoc_gpio_callback_interrupt(gpio_input, &wrapper_for_c_library_single_instance_callback::glue_job_for_callback,(void*) &ignore_me);
   printf("ADIS_16480: Interrupt Handler has been initiated\n");   
-
+  
 
   
   return EXIT_SUCCESS;

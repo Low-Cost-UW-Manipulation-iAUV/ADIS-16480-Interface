@@ -343,26 +343,24 @@ uint8_t ADIS_16480_Interface::read_linear_velocity() {
 
 
 uint8_t ADIS_16480_Interface::set_DEC_RATE(uint16_t dec_rate) {
+	double data_ready_period;
+	uint8_t success_yes_no = 0;
 
-	tx[0] = PG3;    //Switch to page 3
-	tx[1] = DEC_RATE_READ;    //Switch to page 0
-	tx[2] = DEC_RATE_WRITE | (dec_rate & BITMASK_WRITE_LOWER) ;	//write the lower data byte first
-	tx[3] = (DEC_RATE_WRITE + UPPER_DATA_BYTE) | (dec_rate & BITMASK_WRITE_UPPER) ;	//then the upper byte
-	tx[4] = DEC_RATE_READ;    //Switch to page 0
-	tx[5] = PG0;    //Switch to page 0
+	printf("ADIS16480 - Data Out: setting DEC_RATE to: %d\n",dec_rate);
 
-	rx[0] = 0;
-	rx[1] = 0;
-	rx[2] = 0;
-	rx[3] = 0;
-	rx[4] = 0;
-	rx[5] = 0;
+	success_yes_no = write_word(PG3, DEC_RATE_REG, dec_rate);
+	
+	if(success_yes_no){
+		decimation_rate = dec_rate;
+		//Calculate the output sample rate and convert it to period in usec! Forumla from ADIS 16480 datasheet 'AVERAGING/DECIMATION FILTER'
+		data_ready_period = (1 / (2460 / ((double)(decimation_rate + 1)) ) );
 
-	printf("ADIS16480: setting DEC_RATE to: %d, tx2: %x, tx3: %x\n",dec_rate, tx[2], tx[3]);
+		data_ready_period_usec = data_ready_period * SECS_TO_USECS;
+		
+		printf("ADIS16480 - Data Out: DEC_RATE is now: %d\n",dec_rate);
+		printf("ADIS16480 - Data Out: Sample Output Rate is now: %4.f\n",(1/data_ready_period));
+	}
 
-	libsoc_spi_rw(spi_dev, tx, rx, 12);
-	printf("ADIS16480: DEC_RATE was: %d\n",rx[2]);
-	printf("ADIS16480: DEC_RATE set to: %d\n",rx[5]);
 	return 1;
 }
 

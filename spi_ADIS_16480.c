@@ -40,7 +40,7 @@ void ADIS_16480_Interface::print_data_console(bool yesorno){
   print_data_to_console_flag = yesorno;
 };
 
-void ADIS_16480_Interface::print_data_file(bool ypr, bool linear_accelerations, bool linear_velocities, bool linear_position, bool angular_velocities){
+void ADIS_16480_Interface::print_data_file(bool IR_miss_detect, bool ypr, bool linear_accelerations, bool linear_velocities, bool linear_position, bool angular_velocities){
   if(ypr|linear_accelerations|linear_velocities|angular_velocities){
 
     print_data_to_file_flag = 1;
@@ -51,24 +51,27 @@ void ADIS_16480_Interface::print_data_file(bool ypr, bool linear_accelerations, 
     print_angular_velocities_flag = angular_velocities;
 
     file_to_print_to.open(FILENAME_TO_PRINT_DATA_TO);
-
-  if(print_ypr_flag){
-    file_to_print_to << "yaw, pitch, roll, "; 
-  }
-  if(print_linear_accelerations_flag){
-    file_to_print_to << "x acceleration linear, y acceleration linear, z acceleration linear, "; 
+  
+    if(IR_miss_detect){
+      file_to_print_to << "interrupts missed, "; 
     }
-  if(print_linear_velocities_flag){
-    file_to_print_to << "x velocity linear, y velocity linear, z velocity linear, "; 
-  }
-  if(print_linear_position_flag){
-    file_to_print_to << "x position linear, y position linear, z position linear, "; 
-  }
-  if(print_angular_velocities_flag){
-    file_to_print_to << "x velocity angular, y velocity angular, z velocity angular, "; 
+    if(print_ypr_flag){
+      file_to_print_to << "yaw, pitch, roll, "; 
+    }
+    if(print_linear_accelerations_flag){
+      file_to_print_to << "x acceleration linear, y acceleration linear, z acceleration linear, "; 
+      }
+    if(print_linear_velocities_flag){
+      file_to_print_to << "x velocity linear, y velocity linear, z velocity linear, "; 
+    }
+    if(print_linear_position_flag){
+      file_to_print_to << "x position linear, y position linear, z position linear, "; 
+    }
+    if(print_angular_velocities_flag){
+      file_to_print_to << "x velocity angular, y velocity angular, z velocity angular, "; 
 
-  }
-  file_to_print_to << "\n";  
+    }
+    file_to_print_to << "\n";  
 }else{
 
     print_data_to_console_flag = 0;
@@ -86,6 +89,13 @@ void ADIS_16480_Interface::print_to_file(){
 
   //print the time on the ADIS
 
+  if(interrupt_detection_enable_flag){
+    if(IRs_missed < 10000){
+      file_to_print_to << IRs_missed << ", "; 
+    }else{
+      file_to_print_to << "!!!ERROR: Detection probably disabled!!!" << ", "; 
+    }
+  }
   if(print_ypr_flag){
     file_to_print_to << yaw << "," << pitch << "," << roll << ","; 
   }
@@ -135,6 +145,14 @@ ADIS_16480_Interface::ADIS_16480_Interface(){
   print_linear_accelerations_flag = 0;
   print_linear_velocities_flag = 0;
   print_angular_velocities_flag = 0;
+
+  interrupt_detection_enable_flag = 0;
+  IRs_missed = 20000;
+  decimation_rate = 0;
+  //The standard data_ready Period as define by the output rate found in the ADIS 16480datasheet
+  data_ready_period_usec = (1/2460) * SECS_TO_USECS;
+
+
 }
 
 ADIS_16480_Interface::ADIS_16480_Interface(uint8_t spi_device, uint8_t c_select_line, spi_mode spi_hw_mode, spi_bpw spi_bit_mode, uint32_t spi_frequency){
@@ -166,6 +184,12 @@ ADIS_16480_Interface::ADIS_16480_Interface(uint8_t spi_device, uint8_t c_select_
   print_linear_accelerations_flag = 0;
   print_linear_velocities_flag = 0;
   print_angular_velocities_flag = 0;
+
+  interrupt_detection_enable_flag = 0;
+  IRs_missed = 20000;
+  decimation_rate = 0;
+  //The standard data_ready Period as define by the output rate found in the ADIS 16480datasheet
+  data_ready_period_usec = (1/2460) * SECS_TO_USECS;
 }
 
 uint8_t ADIS_16480_Interface::read_product_id() {
@@ -221,7 +245,7 @@ uint8_t ADIS_16480_Interface::configure_initialise(uint8_t spi_device, uint8_t c
 uint8_t ADIS_16480_Interface::close(){
   libsoc_spi_free(spi_dev);
   //close the file if it was open.
-  print_data_file(OFF,OFF,OFF,OFF,OFF);
+  print_data_file(OFF, OFF,OFF,OFF,OFF,OFF);
   return EXIT_SUCCESS;
 }
 
@@ -245,19 +269,20 @@ int main()
   wrapper_for_c_library_single_instance_callback::setObj(my_adis) ;
   
   my_adis.print_data_console(ON);
-  my_adis.print_data_file(ON, ON, OFF, OFF, OFF);
 
   status = my_adis.read_product_id();    //best testing - expect 0x4060
   if(status){
     status = my_adis.read_self_test();
     status = my_adis.read_error_flags();
     libsoc_set_debug(0);
-    //my_adis.set_DEC_RATE(spi_dev,dec_rate_wanted);
+    my_adis.set_DEC_RATE(1);
     // put the ADIS in Body Frame mode
-    my_adis.set_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL);
+    my_adis.clear_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL);
     my_adis.print_data_console(OFF);
-    my_adis.setup_interrupt_ADIS();
 
+    my_adis.print_data_file(ON, ON, ON, OFF, OFF, OFF);
+    my_adis.setup_interrupt_detection(ON);
+    my_adis.setup_interrupt_ADIS();
     sleep(10);
 
 

@@ -107,7 +107,7 @@ uint8_t ADIS_16480_Interface::clear_bits(uint16_t page, uint16_t base_address, u
   uint16_t upper_address_write;
 
 
-  printf("ADIS16480 - Register Write - Clearing the following bits: 0x%x in Register (base address): 0x%x on Page: %d\n", bits_to_clear, base_address, page);
+  printf("ADIS16480 - Register Write - Clearing the following bits: 0x%x in Register (base address): 0x%x on Page: %d\n", bits_to_clear, base_address, (page & (~BITMASK_WRITE_REGISTER)));
     
   tx[0] = page;             //Switch to page 
   tx[1] = base_address;    //Ask for the register content
@@ -173,7 +173,7 @@ uint8_t ADIS_16480_Interface::write_word(uint16_t page, uint16_t base_address, u
   uint16_t upper_address_write;
 
 
-  printf("ADIS16480 - Register Write - Writing the following word  : 0x%x in Register (base address): 0x%x on Page: %d\n", word_to_write, base_address, page);
+  printf("ADIS16480 - Register Write - Writing the following word  : 0x%x in Register (base address): 0x%x on Page: %d\n", word_to_write, base_address, (page & (~BITMASK_WRITE_REGISTER)));
     
    
   register_content_after = word_to_write;

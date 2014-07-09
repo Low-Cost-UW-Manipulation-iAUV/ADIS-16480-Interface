@@ -33,6 +33,8 @@ using namespace std;
 
 static uint16_t tx_old[35], rx_old[35];	//Predefine the rx and tx register
 
+#define SECS_TO_USECS 1000000 
+
 #define ON 1
 #define OFF 0
 
@@ -88,7 +90,7 @@ public:
 	uint8_t write_word(uint16_t, uint16_t, uint16_t );
 
 	void print_data_console(bool);
-	void print_data_file(bool, bool, bool, bool, bool);
+	void print_data_file(bool, bool, bool, bool, bool, bool);
 
 //reg_diag_sts.c/.h
 	uint8_t read_self_test();
@@ -128,6 +130,9 @@ public:
 	int disable_Interrupt_ADIS(void);
 	int job_for_callback();
 
+//interrupt_detection.c/h
+	void setup_interrupt_detection(bool);
+	uint8_t detect_missed_IR(void);
 
 private:
 	uint8_t configure_initialise(uint8_t , uint8_t , spi_mode , spi_bpw , uint32_t );
@@ -142,6 +147,16 @@ private:
 //spi_ADIS_16480.c/h
 	void print_to_file();
   	ofstream file_to_print_to;
+
+//interrupt_detection.c/h
+	bool interrupt_detection_enable_flag;
+	uint16_t IRs_missed;
+	timespec last_callback_timestamp;
+	uint16_t decimation_rate;
+
+
+//data_out.c/.h
+	double data_ready_period_usec;  
 
 	spi* spi_dev ;
 	uint16_t tx[35], rx[35];	//Predefine the rx and tx register

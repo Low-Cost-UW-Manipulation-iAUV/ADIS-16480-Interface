@@ -8,6 +8,9 @@
 #ifndef _ADIS_16480_DATA_
 #define _ADIS_16480_DATA_
 
+#define USECS_TO_SECS 1000000 
+#define SECS_TO_USECS 1000000 
+
 #define YAW_ROLL_COUNT_TO_DEGREE  0.005493164 //180°/2^15counts
 #define LINEAR_ACC_COUNT_TO_g 0.0008
 #define LINEAR_VEL_COUNT_TO_mpsec 0.006103516	//200/2^15
@@ -20,7 +23,7 @@
 
 /*Define the registers*/
 #define DEC_RATE_WRITE 0x8C00
-#define DEC_RATE_READ 0x0C00
+#define DEC_RATE_REG 0x0C00
 
 #define TEMP_OUT 0x0E00
 

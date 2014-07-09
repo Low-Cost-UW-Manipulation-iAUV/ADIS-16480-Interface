@@ -1,4 +1,4 @@
-objects = spi_ADIS_16480.o reg_sys_e_flag.o reg_diag_sts.o reg_glob_cmd.o reg_ekf_cnfg.o data_out.o ADIS_interrupt_read.o wrapper_C_library_callback_to_Cpp.o ADIS_write_to_registers.o HR_data_out.o
+objects = spi_ADIS_16480.o reg_sys_e_flag.o reg_diag_sts.o reg_glob_cmd.o reg_ekf_cnfg.o data_out.o ADIS_interrupt_read.o wrapper_C_library_callback_to_Cpp.o ADIS_write_to_registers.o HR_data_out.o interrupt_detection.o
 
 ADIS_Interface: $(objects)
 	g++ -o ADIS_Interface -L /usr/local/lib -lsoc $(objects)
@@ -33,6 +33,8 @@ wrapper_C_library_callback_to_Cpp.o: wrapper_C_library_callback_to_Cpp.h wrapper
 ADIS_write_to_registers.o: ADIS_write_to_registers.c spi_ADIS_16480.h
 		g++ -c -I /usr/local/include ADIS_write_to_registers.c 
 
+interrupt_detection.o: interrupt_detection.c spi_ADIS_16480.h interrupt_detection.h
+		g++ -c -I /usr/local/include interrupt_detection.c 
 
 clean: 
 		rm ADIS_Interface $(objects)
