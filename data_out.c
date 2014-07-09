@@ -21,6 +21,7 @@
 //ADIS Interface includes
 #include "spi_ADIS_16480.h"
 #include "data_out.h"
+#include "rt_clock.h"
 
 
 uint8_t ADIS_16480_Interface::read_euler_YPR_angles(double* yaw,  double* pitch,  double* roll) {
@@ -387,6 +388,7 @@ uint8_t ADIS_16480_Interface::read_YPR_lin_Acc(void) {
 	rx[5] = 0;
 	rx[6] = 0;
 
+
 	libsoc_spi_rw(spi_dev, tx, rx, 14);
 
 	yaw_raw = rx[1];
@@ -396,6 +398,7 @@ uint8_t ADIS_16480_Interface::read_YPR_lin_Acc(void) {
 	x_acc_raw = rx[4];
 	y_acc_raw = rx[5];
 	z_acc_raw = rx[6];
+
 
 //!!!!!!!!!!!!!!! Convert YPR!!!!!!!!!!!!!!!!!!!!!!
 

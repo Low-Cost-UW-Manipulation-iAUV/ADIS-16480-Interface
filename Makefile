@@ -18,7 +18,7 @@ reg_glob_cmd.o: reg_glob_cmd.c reg_glob_cmd.h spi_ADIS_16480.h
 reg_ekf_cnfg.o: reg_ekf_cnfg.c reg_ekf_cnfg.h spi_ADIS_16480.h
 	g++ -c -I /usr/local/include reg_ekf_cnfg.c
 
-data_out.o: data_out.c data_out.h spi_ADIS_16480.h
+data_out.o: data_out.c data_out.h spi_ADIS_16480.h rt_clock.h
 	g++ -c -I /usr/local/include data_out.c
 
 HR_data_out.o: HR_data_out.c data_out.h HR_data_out.h spi_ADIS_16480.h
@@ -32,6 +32,7 @@ wrapper_C_library_callback_to_Cpp.o: wrapper_C_library_callback_to_Cpp.h wrapper
 
 ADIS_write_to_registers.o: ADIS_write_to_registers.c spi_ADIS_16480.h
 		g++ -c -I /usr/local/include ADIS_write_to_registers.c 
+
 
 clean: 
 		rm ADIS_Interface $(objects)

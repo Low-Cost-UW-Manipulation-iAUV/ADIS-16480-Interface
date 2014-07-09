@@ -78,27 +78,27 @@ uint8_t ADIS_16480_Interface::HR_read_YPR_lin_Acc(void) {
 	if(yaw_raw & BITMASK_TEST_2s_NEG){ //if negative 
 		yaw_raw = ~yaw_raw;		//
 		yaw_raw = yaw_raw + 1;
-		yaw = (-1)* ((double) yaw_raw) * YAW_ROLL_COUNT_TO_DEGREE;
+		yaw = (-1)* ((double) yaw_raw) * HR_YAW_ROLL_COUNT_TO_DEGREE;
 	}else{
-		yaw = (double) yaw_raw * YAW_ROLL_COUNT_TO_DEGREE;
+		yaw = (double) yaw_raw * HR_YAW_ROLL_COUNT_TO_DEGREE;
 	}
 
 /*Convert from 2s complement to decimal*/
 	if(roll_raw & BITMASK_TEST_2s_NEG){ //if negative 
 		roll_raw = ~roll_raw;		//
 		roll_raw = roll_raw + 1;
-		roll = (-1)* ((double) roll_raw) * YAW_ROLL_COUNT_TO_DEGREE;
+		roll = (-1)* ((double) roll_raw) * HR_YAW_ROLL_COUNT_TO_DEGREE;
 	}else{
-		roll = ((double) roll_raw) * YAW_ROLL_COUNT_TO_DEGREE;
+		roll = ((double) roll_raw) * HR_YAW_ROLL_COUNT_TO_DEGREE;
 	}	
 
 /*Convert from 2s complement to decimal*/
 	if(pitch_raw & BITMASK_TEST_2s_NEG){ //if negative 
 		pitch_raw = ~pitch_raw;		//
 		pitch_raw = pitch_raw + 1;
-		pitch = (-1)* ((double) pitch_raw) * YAW_ROLL_COUNT_TO_DEGREE;
+		pitch = (-1)* ((double) pitch_raw) * HR_YAW_ROLL_COUNT_TO_DEGREE;
 	}else{
-		pitch = ((double) pitch_raw) * YAW_ROLL_COUNT_TO_DEGREE;
+		pitch = ((double) pitch_raw) * HR_YAW_ROLL_COUNT_TO_DEGREE;
 	}	
 
 	if (print_data_to_console_flag){
@@ -144,16 +144,22 @@ uint8_t ADIS_16480_Interface::HR_read_YPR_lin_Acc(void) {
 
 uint8_t ADIS_16480_Interface::HR_read_YPR_lin_Vel(void) {
 	uint16_t yaw_raw, pitch_raw, roll_raw;
-	uint16_t x_vel_raw, y_vel_raw, z_vel_raw;
+	uint32_t x_vel_raw, y_vel_raw, z_vel_raw;
 
 	tx[0] = YAW_C32_OUT;    //Ask for Yaw
 	tx[1] = PITCH_C31_OUT;    //Ask for  Pitch and store Yaw
 	tx[2] = ROLL_C23_OUT;    //Ask for Roll and store pitch	
 
 	tx[3] = X_DELTVEL_OUT;    //Ask for x Acc
-	tx[4] = Y_DELTVEL_OUT;    //Ask for  y Acc
-	tx[5] = Z_DELTVEL_OUT;    //Ask for z Acc
-	tx[6] = PG0;			//go back to PG0 and get the last data
+	tx[4] = X_DELTVEL_LOW;    //Ask for x Acc
+
+	tx[5] = Y_DELTVEL_OUT;    //Ask for  y Acc
+	tx[6] = Y_DELTVEL_LOW;    //Ask for  y Acc
+
+	tx[7] = Z_DELTVEL_OUT;    //Ask for z Acc
+	tx[8] = Z_DELTVEL_LOW;    //Ask for z Acc
+
+	tx[9] = PG0;			//go back to PG0 and get the last data
 
 	rx[0] = 0;
 	rx[1] = 0;
@@ -162,16 +168,25 @@ uint8_t ADIS_16480_Interface::HR_read_YPR_lin_Vel(void) {
 	rx[4] = 0;
 	rx[5] = 0;
 	rx[6] = 0;
+	rx[7] = 0;
+	rx[8] = 0;
+	rx[9] = 0;	
 
-	libsoc_spi_rw(spi_dev, tx, rx, 14);
+	libsoc_spi_rw(spi_dev, tx, rx, 20);
 
 	yaw_raw = rx[1];
 	pitch_raw = rx[2];
 	roll_raw = rx[3];
 
 	x_vel_raw = rx[4];
-	y_vel_raw = rx[5];
-	z_vel_raw = rx[6];
+	x_vel_raw = x_vel_raw | rx[5];
+
+	y_vel_raw = rx[6];
+	y_vel_raw = y_vel_raw| rx[7];
+
+	z_vel_raw = rx[8];
+	z_vel_raw = z_vel_raw | rx[9];
+
 
 //!!!!!!!!!!!!!!! Convert YPR!!!!!!!!!!!!!!!!!!!!!!
 
@@ -179,27 +194,27 @@ uint8_t ADIS_16480_Interface::HR_read_YPR_lin_Vel(void) {
 	if(yaw_raw & BITMASK_TEST_2s_NEG){ //if negative 
 		yaw_raw = ~yaw_raw;		//
 		yaw_raw = yaw_raw + 1;
-		yaw = (-1)* ((double) yaw_raw) * YAW_ROLL_COUNT_TO_DEGREE;
+		yaw = (-1)* ((double) yaw_raw) * HR_YAW_ROLL_COUNT_TO_DEGREE;
 	}else{
-		yaw = (double) yaw_raw * YAW_ROLL_COUNT_TO_DEGREE;
+		yaw = (double) yaw_raw * HR_YAW_ROLL_COUNT_TO_DEGREE;
 	}
 
 /*Convert from 2s complement to decimal*/
 	if(roll_raw & BITMASK_TEST_2s_NEG){ //if negative 
 		roll_raw = ~roll_raw;		//
 		roll_raw = roll_raw + 1;
-		roll = (-1)* ((double) roll_raw) * YAW_ROLL_COUNT_TO_DEGREE;
+		roll = (-1)* ((double) roll_raw) * HR_YAW_ROLL_COUNT_TO_DEGREE;
 	}else{
-		roll = ((double) roll_raw) * YAW_ROLL_COUNT_TO_DEGREE;
+		roll = ((double) roll_raw) * HR_YAW_ROLL_COUNT_TO_DEGREE;
 	}	
 
 /*Convert from 2s complement to decimal*/
 	if(pitch_raw & BITMASK_TEST_2s_NEG){ //if negative 
 		pitch_raw = ~pitch_raw;		//
 		pitch_raw = pitch_raw + 1;
-		pitch = (-1)* ((double) pitch_raw) * YAW_ROLL_COUNT_TO_DEGREE;
+		pitch = (-1)* ((double) pitch_raw) * HR_YAW_ROLL_COUNT_TO_DEGREE;
 	}else{
-		pitch = ((double) pitch_raw) * YAW_ROLL_COUNT_TO_DEGREE;
+		pitch = ((double) pitch_raw) * HR_YAW_ROLL_COUNT_TO_DEGREE;
 	}	
 
 	if (print_data_to_console_flag){

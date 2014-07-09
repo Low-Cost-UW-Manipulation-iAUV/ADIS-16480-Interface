@@ -45,6 +45,10 @@ static uint16_t tx_old[35], rx_old[35];	//Predefine the rx and tx register
 #define PROD_ID 0x7e00        // Product ID register which is stable and predefined to be 0x4060 = .16480 = 0b0100 0000 0110 0000
 #define PROD_ID_DEFAULT 0x4060
 
+// Configuration of the Real Time clock and some other bits not used by us.
+#define CONFIG 0x0A00
+#define BITMASK_RTCLOCK_STOPWATCH_ON 0x0003 
+
 //Bitmasks
 #define BITMASK_WRITE_REGISTER 0x8000     //Use this to & (AND) register addresses if you want to write to that register
 #define UPPER_DATA_BYTE 0x0100
@@ -152,6 +156,8 @@ private:
 	double x_position, y_position, z_position;
 	// Create both gpio pointers
   	gpio *gpio_input;
+  	uint16_t rt_min_sec;
+
 
 
 };
