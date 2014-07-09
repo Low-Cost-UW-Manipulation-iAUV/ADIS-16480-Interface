@@ -65,27 +65,33 @@ uint8_t ADIS_16480_Interface::set_bits(uint16_t page, uint16_t base_address, uin
   tx[0] = page;             //Switch to page 
   tx[1] = lower_address_write;   //Send lower 8 bits of data
   tx[2] = upper_address_write;    //send upper 8 bits of data
-  tx[3] = base_address;           //read back to check if it worked.
-  tx[4] = PG0;
+  tx[3] = PG0;
 
   rx[0] = 0;
   rx[1] = 0;
   rx[2] = 0;
   rx[3] = 0;
-  rx[4] = 0;
 
+  libsoc_spi_rw(spi_dev, tx, rx, 8);  
 
+  tx[0] = page;             //Switch to page 
+  tx[1] = base_address;
+  tx[2] = PG0;
 
-  libsoc_spi_rw(spi_dev, tx, rx, 10);  
+  rx[0] = 0;
+  rx[1] = 0;
+  rx[2] = 0;
+
+  libsoc_spi_rw(spi_dev, tx, rx, 6);  
 
 //Check that the write was successfull.
-  if(rx[4] == register_content_after){
-    printf("ADIS16480 - Register Write: Success, register now contains: 0x%x\n",rx[4]);
+  if(rx[2] == register_content_after){
+    printf("ADIS16480 - Register Write: Success, register now contains: 0x%x\n",rx[2]);
 
     return 1;
 
   }else{
-    printf("ADIS16480 - Register Write: FAILURE, register now contains: 0x%x\n",rx[4]);
+    printf("ADIS16480 - Register Write: FAILURE, register now contains: 0x%x\n",rx[2]);
 
     return 0;
 
@@ -125,26 +131,34 @@ uint8_t ADIS_16480_Interface::clear_bits(uint16_t page, uint16_t base_address, u
   
   tx[0] = page;             //Switch to page 
   tx[1] = lower_address_write;   //Send lower 8 bits of data
-  tx[2] = upper_address_write;           //change back to page 0 while register While getting the PROD_ID
-  tx[3] = base_address;
-  tx[4] = PG0;
+  tx[2] = upper_address_write;    //send upper 8 bits of data
+  tx[3] = PG0;
 
   rx[0] = 0;
   rx[1] = 0;
   rx[2] = 0;
   rx[3] = 0;
-  rx[4] = 0;
 
-  libsoc_spi_rw(spi_dev, tx, rx, 10);  
+  libsoc_spi_rw(spi_dev, tx, rx, 8);  
+
+  tx[0] = page;             //Switch to page 
+  tx[1] = base_address;
+  tx[2] = PG0;
+
+  rx[0] = 0;
+  rx[1] = 0;
+  rx[2] = 0;
+
+  libsoc_spi_rw(spi_dev, tx, rx, 6);  
 
 //Check that the write was successfull.
-  if(rx[4] == register_content_after){
-    printf("ADIS16480 - Register Write: Success, register now contains: 0x%x\n",rx[4]);
+  if(rx[2] == register_content_after){
+    printf("ADIS16480 - Register Write: Success, register now contains: 0x%x\n",rx[2]);
 
     return 1;
 
   }else{
-    printf("ADIS16480 - Register Write: FAILURE, register now contains: 0x%x\n",rx[4]);
+    printf("ADIS16480 - Register Write: FAILURE, register now contains: 0x%x\n",rx[2]);
 
     return 0;
 
@@ -170,26 +184,34 @@ uint8_t ADIS_16480_Interface::write_word(uint16_t page, uint16_t base_address, u
   
   tx[0] = page;             //Switch to page 
   tx[1] = lower_address_write;   //Send lower 8 bits of data
-  tx[2] = upper_address_write;           //change back to page 0 while register While getting the PROD_ID
-  tx[3] = base_address;
-  tx[4] = PG0;
+  tx[2] = upper_address_write;    //send upper 8 bits of data
+  tx[3] = PG0;
 
   rx[0] = 0;
   rx[1] = 0;
   rx[2] = 0;
   rx[3] = 0;
-  rx[4] = 0;
 
-  libsoc_spi_rw(spi_dev, tx, rx, 10);  
+  libsoc_spi_rw(spi_dev, tx, rx, 8);  
+
+  tx[0] = page;             //Switch to page 
+  tx[1] = base_address;
+  tx[2] = PG0;
+
+  rx[0] = 0;
+  rx[1] = 0;
+  rx[2] = 0;
+
+  libsoc_spi_rw(spi_dev, tx, rx, 6);  
 
 //Check that the write was successfull.
-  if(rx[4] == register_content_after){
-    printf("ADIS16480 - Register Write: Success, register now contains: 0x%x\n",rx[4]);
+  if(rx[2] == register_content_after){
+    printf("ADIS16480 - Register Write: Success, register now contains: 0x%x\n",rx[2]);
 
     return 1;
 
   }else{
-    printf("ADIS16480 - Register Write: FAILURE, register now contains: 0x%x\n",rx[4]);
+    printf("ADIS16480 - Register Write: FAILURE, register now contains: 0x%x\n",rx[2]);
 
     return 0;
 

@@ -51,7 +51,6 @@ void ADIS_16480_Interface::print_data_file(bool ypr, bool linear_accelerations, 
     print_angular_velocities_flag = angular_velocities;
 
     file_to_print_to.open(FILENAME_TO_PRINT_DATA_TO);
-    file_to_print_to << "Min, Sec, ";
 
   if(print_ypr_flag){
     file_to_print_to << "yaw, pitch, roll, "; 
@@ -86,7 +85,6 @@ void ADIS_16480_Interface::print_data_file(bool ypr, bool linear_accelerations, 
 void ADIS_16480_Interface::print_to_file(){
 
   //print the time on the ADIS
-  file_to_print_to << rt_min_sec << "," << rt_min_sec << ",";
 
   if(print_ypr_flag){
     file_to_print_to << yaw << "," << pitch << "," << roll << ","; 
@@ -256,7 +254,6 @@ int main()
     libsoc_set_debug(0);
     //my_adis.set_DEC_RATE(spi_dev,dec_rate_wanted);
     // put the ADIS in Body Frame mode
-    my_adis.set_bits(PG3, CONFIG, BITMASK_RTCLOCK_STOPWATCH_ON);
     my_adis.set_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL);
     my_adis.print_data_console(OFF);
     my_adis.setup_interrupt_ADIS();

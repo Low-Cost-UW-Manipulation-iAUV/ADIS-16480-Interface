@@ -31,7 +31,7 @@
 /*This function will be called when the callback mechanism is used. Place all jobs you want it to do in here.*/
 int ADIS_16480_Interface::job_for_callback(){
   
-  read_YPR_lin_Acc();
+  HR_read_YPR_lin_Acc();
   if(print_data_to_file_flag){
     print_to_file();
   }

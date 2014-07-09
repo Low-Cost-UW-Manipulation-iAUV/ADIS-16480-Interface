@@ -64,18 +64,19 @@ uint8_t ADIS_16480_Interface::HR_read_YPR_lin_Acc(void) {
 	roll_raw = rx[3];
 
 	x_acc_raw = rx[4]<<16;			//Load the MSB into the upper 16 bits of the output register
-	x_acc_raw = x_acc_raw | rx[5];	//Then load the extra 16 bits resolution into the LSB slots
+	x_acc_raw = x_acc_raw + rx[5];	//Then load the extra 16 bits resolution into the LSB slots
 
 	y_acc_raw = rx[6]<<16;
-	y_acc_raw = y_acc_raw | rx[7];
+	y_acc_raw = y_acc_raw + rx[7];
 
 	z_acc_raw = rx[8]<<16;
-	z_acc_raw = z_acc_raw | rx[9];
+	z_acc_raw = z_acc_raw + rx[9];
+
 
 //!!!!!!!!!!!!!!! Convert YPR!!!!!!!!!!!!!!!!!!!!!!
 
 /*Convert from 2s complement to decimal*/
-	if(yaw_raw & BITMASK_TEST_2s_NEG){ //if negative 
+	if(yaw_raw & HR_BITMASK_TEST_2s_NEG){ //if negative 
 		yaw_raw = ~yaw_raw;		//
 		yaw_raw = yaw_raw + 1;
 		yaw = (-1)* ((double) yaw_raw) * HR_YAW_ROLL_COUNT_TO_DEGREE;
@@ -84,7 +85,7 @@ uint8_t ADIS_16480_Interface::HR_read_YPR_lin_Acc(void) {
 	}
 
 /*Convert from 2s complement to decimal*/
-	if(roll_raw & BITMASK_TEST_2s_NEG){ //if negative 
+	if(roll_raw & HR_BITMASK_TEST_2s_NEG){ //if negative 
 		roll_raw = ~roll_raw;		//
 		roll_raw = roll_raw + 1;
 		roll = (-1)* ((double) roll_raw) * HR_YAW_ROLL_COUNT_TO_DEGREE;
@@ -93,7 +94,7 @@ uint8_t ADIS_16480_Interface::HR_read_YPR_lin_Acc(void) {
 	}	
 
 /*Convert from 2s complement to decimal*/
-	if(pitch_raw & BITMASK_TEST_2s_NEG){ //if negative 
+	if(pitch_raw & HR_BITMASK_TEST_2s_NEG){ //if negative 
 		pitch_raw = ~pitch_raw;		//
 		pitch_raw = pitch_raw + 1;
 		pitch = (-1)* ((double) pitch_raw) * HR_YAW_ROLL_COUNT_TO_DEGREE;
@@ -108,28 +109,29 @@ uint8_t ADIS_16480_Interface::HR_read_YPR_lin_Acc(void) {
 
 //!!!!!!!!!!!!!!! Convert the linear acceleration!!!!!!!!!!!!!!!!!!!!!!
 	/*Convert from 2s complement to decimal*/
-	if(x_acc_raw & BITMASK_TEST_2s_NEG){ //if negative 
+	if(x_acc_raw & HR_BITMASK_TEST_2s_NEG){ //if negative 
 		x_acc_raw = ~x_acc_raw;		//
 		x_acc_raw = x_acc_raw + 1;
-		x_acceleration = (-1)* ((double) x_acc_raw) * HR_LINEAR_ACC_COUNT_TO_g;
+		x_acceleration = (-1)* (((double) x_acc_raw) * HR_LINEAR_ACC_COUNT_TO_g);
 	}else{
 		x_acceleration = (double) x_acc_raw * HR_LINEAR_ACC_COUNT_TO_g;
 	}
 
 /*Convert from 2s complement to decimal*/
-	if(y_acc_raw & BITMASK_TEST_2s_NEG){ //if negative 
+	if(y_acc_raw & HR_BITMASK_TEST_2s_NEG){ //if negative 
 		y_acc_raw = ~y_acc_raw;		//
 		y_acc_raw = y_acc_raw + 1;
-		y_acceleration = (-1)* ((double) y_acc_raw) * HR_LINEAR_ACC_COUNT_TO_g;
+		y_acceleration = (-1)* (((double) y_acc_raw) * HR_LINEAR_ACC_COUNT_TO_g);
 	}else{
 		y_acceleration = (double) y_acc_raw * HR_LINEAR_ACC_COUNT_TO_g;
 	}
 
 /*Convert from 2s complement to decimal*/
-	if(z_acc_raw & BITMASK_TEST_2s_NEG){ //if negative 
+	if(z_acc_raw & HR_BITMASK_TEST_2s_NEG){ //if negative 
 		z_acc_raw = ~z_acc_raw;		//
 		z_acc_raw = z_acc_raw + 1;
-		z_acceleration = (-1)* ((double) z_acc_raw) * HR_LINEAR_ACC_COUNT_TO_g;
+		z_acceleration = (-1)* (((double) z_acc_raw) * HR_LINEAR_ACC_COUNT_TO_g);
+
 	}else{
 		z_acceleration = (double) z_acc_raw * HR_LINEAR_ACC_COUNT_TO_g;
 	}
@@ -191,7 +193,7 @@ uint8_t ADIS_16480_Interface::HR_read_YPR_lin_Vel(void) {
 //!!!!!!!!!!!!!!! Convert YPR!!!!!!!!!!!!!!!!!!!!!!
 
 /*Convert from 2s complement to decimal*/
-	if(yaw_raw & BITMASK_TEST_2s_NEG){ //if negative 
+	if(yaw_raw & HR_BITMASK_TEST_2s_NEG){ //if negative 
 		yaw_raw = ~yaw_raw;		//
 		yaw_raw = yaw_raw + 1;
 		yaw = (-1)* ((double) yaw_raw) * HR_YAW_ROLL_COUNT_TO_DEGREE;
@@ -200,7 +202,7 @@ uint8_t ADIS_16480_Interface::HR_read_YPR_lin_Vel(void) {
 	}
 
 /*Convert from 2s complement to decimal*/
-	if(roll_raw & BITMASK_TEST_2s_NEG){ //if negative 
+	if(roll_raw & HR_BITMASK_TEST_2s_NEG){ //if negative 
 		roll_raw = ~roll_raw;		//
 		roll_raw = roll_raw + 1;
 		roll = (-1)* ((double) roll_raw) * HR_YAW_ROLL_COUNT_TO_DEGREE;
@@ -209,7 +211,7 @@ uint8_t ADIS_16480_Interface::HR_read_YPR_lin_Vel(void) {
 	}	
 
 /*Convert from 2s complement to decimal*/
-	if(pitch_raw & BITMASK_TEST_2s_NEG){ //if negative 
+	if(pitch_raw & HR_BITMASK_TEST_2s_NEG){ //if negative 
 		pitch_raw = ~pitch_raw;		//
 		pitch_raw = pitch_raw + 1;
 		pitch = (-1)* ((double) pitch_raw) * HR_YAW_ROLL_COUNT_TO_DEGREE;
@@ -226,7 +228,7 @@ uint8_t ADIS_16480_Interface::HR_read_YPR_lin_Vel(void) {
 		printf("velocities: x 0x%04x, y 0x%04x, z 0x%04x\n",x_vel_raw, y_vel_raw, z_vel_raw);
 	}
 
-	if(x_vel_raw & BITMASK_TEST_2s_NEG){ //if negative 
+	if(x_vel_raw & HR_BITMASK_TEST_2s_NEG){ //if negative 
 		x_vel_raw = ~x_vel_raw;		//
 		x_vel_raw = x_vel_raw + 1;
 		x_velocity = (-1)* ((double) x_vel_raw) * LINEAR_VEL_COUNT_TO_mpsec;
@@ -235,7 +237,7 @@ uint8_t ADIS_16480_Interface::HR_read_YPR_lin_Vel(void) {
 	}
 
 //Convert from 2s complement to decimal/
-	if(y_vel_raw & BITMASK_TEST_2s_NEG){ //if negative 
+	if(y_vel_raw & HR_BITMASK_TEST_2s_NEG){ //if negative 
 		y_vel_raw = ~y_vel_raw;		//
 		y_vel_raw = y_vel_raw + 1;
 		y_velocity = (-1)* ((double) y_vel_raw) * LINEAR_VEL_COUNT_TO_mpsec;
@@ -244,7 +246,7 @@ uint8_t ADIS_16480_Interface::HR_read_YPR_lin_Vel(void) {
 	}
 
 //Convert from 2s complement to decimal
-	if(z_vel_raw & BITMASK_TEST_2s_NEG){ //if negative 
+	if(z_vel_raw & HR_BITMASK_TEST_2s_NEG){ //if negative 
 		z_vel_raw = ~z_vel_raw;		//
 		z_vel_raw = z_vel_raw + 1;
 		z_velocity = (-1)* ((double) z_vel_raw) * LINEAR_VEL_COUNT_TO_mpsec;

@@ -129,10 +129,6 @@ public:
 	int job_for_callback();
 
 
-
-
-
-
 private:
 	uint8_t configure_initialise(uint8_t , uint8_t , spi_mode , spi_bpw , uint32_t );
 	bool print_data_to_console_flag;
@@ -156,7 +152,6 @@ private:
 	double x_position, y_position, z_position;
 	// Create both gpio pointers
   	gpio *gpio_input;
-  	uint16_t rt_min_sec;
 
 
 
