@@ -280,7 +280,9 @@ int main()
     my_adis.clear_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL);
     my_adis.print_data_console(OFF);
 
+//This needs to be done in this sequence. If you dont do it it wont write the right stuff to the file...
     my_adis.print_data_file(ON, ON, ON, OFF, OFF, OFF);
+    //The first callback will usually have 'missed' 54/55 interrupts. This is due to setup time on the function.
     my_adis.setup_interrupt_detection(ON);
     my_adis.setup_interrupt_ADIS();
     sleep(10);
