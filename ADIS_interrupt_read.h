@@ -8,6 +8,16 @@
 #ifndef _ADIS_16480_IR_READ_
 #define _ADIS_16480_IR_READ_
 
+//control the switch statement in the callback job function
+#define IR_R_NOTHING 0
+#define IR_R_YPR 1
+#define IR_R_LACC 2 
+#define IR_R_LVEL 3 
+#define IR_R_YPR_LACC 4
+#define IR_R_YPR_LVEL 5
+#define IR_R_HR_YPR_lACC 6
+#define IR_R_HR_YPR_lVEL 7
+
 /*The Data_Ready line coming from the ADIS through the Interface board*/
 #define GPIO_INPUT 49  /*It is on pin 23, but internally on the BBB's GPIO1[17]
 						--> 32bit offset to get to 2nd controller:

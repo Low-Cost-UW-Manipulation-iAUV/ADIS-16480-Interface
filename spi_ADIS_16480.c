@@ -4,7 +4,7 @@
  * Author: Raphael Nagel
  * Date: 04/June/2014
  */
-#define FILENAME_TO_PRINT_DATA_TO "ADIS-Data-09-Jul-2014-11-35.txt"
+#define FILENAME_TO_PRINT_DATA_TO "ADIS-Data-#-%d-10-Jul-2014-16-11"
 
 
 
@@ -40,7 +40,9 @@ void ADIS_16480_Interface::print_data_console(bool yesorno){
   print_data_to_console_flag = yesorno;
 };
 
-void ADIS_16480_Interface::print_data_file(bool IR_miss_detect, bool ypr, bool linear_accelerations, bool linear_velocities, bool linear_position, bool angular_velocities){
+void ADIS_16480_Interface::print_data_file(unsigned int counter, bool IR_miss_detect, bool ypr, bool linear_accelerations, bool linear_velocities, bool linear_position, bool angular_velocities){
+  char filename[40] = "";
+
   if(ypr|linear_accelerations|linear_velocities|angular_velocities){
 
     print_data_to_file_flag = 1;
@@ -49,8 +51,10 @@ void ADIS_16480_Interface::print_data_file(bool IR_miss_detect, bool ypr, bool l
     print_linear_velocities_flag = linear_velocities;
     print_linear_position_flag = linear_position;
     print_angular_velocities_flag = angular_velocities;
-
-    file_to_print_to.open(FILENAME_TO_PRINT_DATA_TO);
+    
+    sprintf(filename, FILENAME_TO_PRINT_DATA_TO, counter);
+    strcat(filename,".txt");
+    file_to_print_to.open(filename);
   
     if(IR_miss_detect){
       file_to_print_to << "interrupts missed, "; 
@@ -245,7 +249,7 @@ uint8_t ADIS_16480_Interface::configure_initialise(uint8_t spi_device, uint8_t c
 uint8_t ADIS_16480_Interface::close(){
   libsoc_spi_free(spi_dev);
   //close the file if it was open.
-  print_data_file(OFF, OFF,OFF,OFF,OFF,OFF);
+  print_data_file(0, OFF, OFF,OFF,OFF,OFF,OFF);
   return EXIT_SUCCESS;
 }
 
@@ -265,31 +269,48 @@ int main()
   ADIS_16480_Interface my_adis;
   uint8_t status;
 
+
+
   // Set the my_adis  object as the object containing the callee
   wrapper_for_c_library_single_instance_callback::setObj(my_adis) ;
   
+
   my_adis.print_data_console(ON);
+for(i=0;i<10;i++){
+    status = my_adis.read_product_id();    //best testing - expect 0x4060
+    if(status){
+      
+      printf("!!!!!!!! GET READY for file nr: %d!!!!!!!!!!!!!!!\n", i);
+      sleep(5);
 
-  status = my_adis.read_product_id();    //best testing - expect 0x4060
-  if(status){
-    status = my_adis.read_self_test();
-    status = my_adis.read_error_flags();
-    libsoc_set_debug(0);
-    my_adis.set_DEC_RATE(1);
-    // put the ADIS in Body Frame mode
-    my_adis.clear_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL);
-    my_adis.print_data_console(OFF);
+      status = my_adis.read_self_test();
+      status = my_adis.read_error_flags();
+      libsoc_set_debug(0);
+      my_adis.set_DEC_RATE(8);
+      // put the ADIS in Body Frame mode
+      my_adis.clear_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL);
+      my_adis.print_data_console(OFF);
 
-//This needs to be done in this sequence. If you dont do it it wont write the right stuff to the file...
-    my_adis.print_data_file(ON, ON, ON, OFF, OFF, OFF);
-    //The first callback will usually have 'missed' 54/55 interrupts. This is due to setup time on the function.
-    my_adis.setup_interrupt_detection(ON);
-    my_adis.setup_interrupt_ADIS();
-    sleep(10);
+      //This needs to be done in this sequence. If you dont do it it wont write the right stuff to the file...
+      my_adis.print_data_file(i, ON, ON, ON, OFF, OFF, OFF);
+
+      //The first callback will usually have 'missed' 54/55 interrupts. This is due to setup time on the function.
+      my_adis.setup_interrupt_detection(ON);
+
+      //set up the interrupt and tell it to read the HR YPR and linear Accelerometer data
+      my_adis.setup_interrupt_ADIS(IR_R_HR_YPR_lACC);
+      printf("!!!!!!!! Dont move!!!!!!!!!!!!!!!!\n");
+      sleep(1);
+      printf("!!!!!!!! GO!!!!!!!!!!!!!!!\n");
+
+      sleep(9);
 
 
-    my_adis.disable_Interrupt_ADIS();
+      my_adis.disable_Interrupt_ADIS();
+      my_adis.print_data_file(0, OFF, OFF, OFF, OFF, OFF, OFF);
+
   }
+}
   my_adis.close();
   return EXIT_SUCCESS;
 }

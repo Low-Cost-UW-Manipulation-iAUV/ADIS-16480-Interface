@@ -31,7 +31,45 @@
 /*This function will be called when the callback mechanism is used. Place all jobs you want it to do in here.*/
 int ADIS_16480_Interface::job_for_callback(){
   
-  HR_read_YPR_lin_Acc();
+  switch(interrupt_read_option){
+    
+    case IR_R_NOTHING:
+      return 1;
+      break;
+
+    case IR_R_YPR:
+      read_euler_YPR_angles();
+      break;
+
+    case IR_R_LACC:
+      read_linear_acceleration();      
+      break;  
+
+    case IR_R_LVEL:
+    read_linear_velocity();
+      break;        
+
+    case IR_R_YPR_LACC:
+      read_YPR_lin_Acc();
+      break;
+
+    case IR_R_YPR_LVEL:
+      read_YPR_lin_Vel();    
+      break;
+
+    case IR_R_HR_YPR_lACC:
+      HR_read_YPR_lin_Acc();
+      break;
+
+    case IR_R_HR_YPR_lVEL:
+      HR_read_YPR_lin_Vel();
+      break;
+
+    default:
+      return 1;        
+  }
+
+
 
   if(interrupt_detection_enable_flag){
     detect_missed_IR();
@@ -45,10 +83,10 @@ int ADIS_16480_Interface::job_for_callback(){
 };
 
 
-int ADIS_16480_Interface::setup_interrupt_ADIS(void)
+int ADIS_16480_Interface::setup_interrupt_ADIS(int what_to_read)
 {
   int ignore_me;
-
+  interrupt_read_option = what_to_read;
   // Enable debug output
   libsoc_set_debug(1);
 

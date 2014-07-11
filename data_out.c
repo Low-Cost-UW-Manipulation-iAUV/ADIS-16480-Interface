@@ -76,7 +76,7 @@ uint8_t ADIS_16480_Interface::read_euler_YPR_angles(double* yaw,  double* pitch,
 	return 1;
 }
 
-uint8_t ADIS_16480_Interface::read_euler_YPR_angles() {
+uint8_t ADIS_16480_Interface::read_euler_YPR_angles(void) {
 	uint16_t yaw_raw, pitch_raw, roll_raw;
 	tx[0] = YAW_C32_OUT;    //Ask for Yaw
 	tx[1] = PITCH_C31_OUT;    //Ask for  Pitch and store Yaw
@@ -181,7 +181,7 @@ uint8_t ADIS_16480_Interface::read_linear_acceleration(double* x_acc,  double* y
 	return 1;
 }
 
-uint8_t ADIS_16480_Interface::read_linear_acceleration() {
+uint8_t ADIS_16480_Interface::read_linear_acceleration(void) {
 	uint16_t x_acc_raw, y_acc_raw, z_acc_raw;
 	tx[0] = X_ACCL_OUT;    //Ask for Yaw
 	tx[1] = Y_ACCL_OUT;    //Ask for  Pitch and store Yaw
@@ -286,7 +286,7 @@ uint8_t ADIS_16480_Interface::read_linear_velocity(double* x_vel,  double* y_vel
 	return 1;
 }
 
-uint8_t ADIS_16480_Interface::read_linear_velocity() {
+uint8_t ADIS_16480_Interface::read_linear_velocity(void) {
 	uint16_t x_vel_raw, y_vel_raw, z_vel_raw;
 	tx[0] = X_DELTVEL_OUT;    //Ask for Yaw
 	tx[1] = Y_DELTVEL_OUT;    //Ask for  Pitch and store Yaw

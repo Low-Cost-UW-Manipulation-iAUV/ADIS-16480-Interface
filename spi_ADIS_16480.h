@@ -90,7 +90,7 @@ public:
 	uint8_t write_word(uint16_t, uint16_t, uint16_t );
 
 	void print_data_console(bool);
-	void print_data_file(bool, bool, bool, bool, bool, bool);
+	void print_data_file(unsigned int, bool, bool, bool, bool, bool, bool);
 
 //reg_diag_sts.c/.h
 	uint8_t read_self_test();
@@ -112,11 +112,11 @@ public:
 
 //data_out.c/h
 	uint8_t read_euler_YPR_angles(double* ,  double* ,  double* );
-	uint8_t read_euler_YPR_angles();
+	uint8_t read_euler_YPR_angles(void);
 	uint8_t read_linear_acceleration(double* ,  double* ,  double* );
-	uint8_t read_linear_acceleration();
+	uint8_t read_linear_acceleration(void);
 	uint8_t read_linear_velocity(double* ,  double* ,  double* );
-	uint8_t read_linear_velocity();
+	uint8_t read_linear_velocity(void);
 	uint8_t set_DEC_RATE(uint16_t );
 	uint8_t read_YPR_lin_Acc(void);
 	uint8_t read_YPR_lin_Vel(void);
@@ -126,7 +126,7 @@ public:
 	uint8_t HR_read_YPR_lin_Vel(void);	
 
 //ADIS_interrupt_read.c/h
-	int setup_interrupt_ADIS(void);
+	int setup_interrupt_ADIS(int);
 	int disable_Interrupt_ADIS(void);
 	int job_for_callback();
 
@@ -143,6 +143,9 @@ private:
 	bool print_linear_velocities_flag;
 	bool print_linear_position_flag;
 	bool print_angular_velocities_flag;
+
+//ADIS_interrupt_read.c/h
+	int interrupt_read_option;	
   	
 //spi_ADIS_16480.c/h
 	void print_to_file();
