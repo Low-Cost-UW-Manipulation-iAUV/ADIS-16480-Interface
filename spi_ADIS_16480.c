@@ -267,7 +267,9 @@ int main()
   //uint16_t dec_rate_wanted = 1; //set the dec_rate
   ADIS_16480_Interface my_adis;
   uint8_t status;
-
+  //reset the adis from previous settings
+  my_adis.do_Software_reset();
+  sleep(2);
 
 
   // Set the my_adis  object as the object containing the callee
@@ -278,16 +280,14 @@ int main()
 for(i=0;i<2;i++){
     status = my_adis.read_product_id();    //best testing - expect 0x4060
     if(status){
-      
       printf("!!!!!!!! GET READY for file nr: %d!!!!!!!!!!!!!!!\n", i);
-      sleep(5);
 
       status = my_adis.read_self_test();
       status = my_adis.read_error_flags();
       libsoc_set_debug(0);
       my_adis.set_DEC_RATE(8);
       // take  the ADIS out of Body Frame mode
-      my_adis.set_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL);
+      my_adis.clear_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL);
       my_adis.print_data_console(OFF);
 
       //This needs to be done in this sequence. If you dont do it it wont write the right stuff to the file...
