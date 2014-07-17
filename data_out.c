@@ -43,32 +43,10 @@ uint8_t ADIS_16480_Interface::read_euler_YPR_angles(double* yaw,  double* pitch,
 	pitch_raw = rx[2];
 	roll_raw = rx[3];
 
-/*Convert from 2s complement to decimal*/
-	if(yaw_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		yaw_raw = ~yaw_raw;		//
-		yaw_raw = yaw_raw + 1;
-		*yaw = (-1)* ((double) yaw_raw) * YAW_ROLL_COUNT_TO_DEGREE;
-	}else{
-		*yaw = (double) yaw_raw * YAW_ROLL_COUNT_TO_DEGREE;
-	}
+	convert_2s_to_x( &yaw_raw,  YAW_ROLL_COUNT_TO_DEGREE,  yaw);
+	convert_2s_to_x( &pitch_raw,  YAW_ROLL_COUNT_TO_DEGREE,  pitch);
+	convert_2s_to_x( &roll_raw,  YAW_ROLL_COUNT_TO_DEGREE,  roll);
 
-/*Convert from 2s complement to decimal*/
-	if(roll_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		roll_raw = ~roll_raw;		//
-		roll_raw = roll_raw + 1;
-		*roll = (-1)* ((double) roll_raw) * YAW_ROLL_COUNT_TO_DEGREE;
-	}else{
-		*roll = ((double) roll_raw) * YAW_ROLL_COUNT_TO_DEGREE;
-	}	
-
-/*Convert from 2s complement to decimal*/
-	if(pitch_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		pitch_raw = ~pitch_raw;		//
-		pitch_raw = pitch_raw + 1;
-		*pitch = (-1)* ((double) pitch_raw) * YAW_ROLL_COUNT_TO_DEGREE;
-	}else{
-		*pitch = ((double) pitch_raw) * YAW_ROLL_COUNT_TO_DEGREE;
-	}	
 
 	if (print_data_to_console_flag){
 		printf("yaw: % 3.4f, pitch: % 3.4f, roll: % 3.4f \n",*yaw,*pitch,*roll);
@@ -96,32 +74,9 @@ uint8_t ADIS_16480_Interface::read_euler_YPR_angles(void) {
 	pitch_raw = rx[2];
 	roll_raw = rx[3];
 
-/*Convert from 2s complement to decimal*/
-	if(yaw_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		yaw_raw = ~yaw_raw;		//
-		yaw_raw = yaw_raw + 1;
-		yaw = (-1)* ((double) yaw_raw) * YAW_ROLL_COUNT_TO_DEGREE;
-	}else{
-		yaw = (double) yaw_raw * YAW_ROLL_COUNT_TO_DEGREE;
-	}
-
-/*Convert from 2s complement to decimal*/
-	if(roll_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		roll_raw = ~roll_raw;		//
-		roll_raw = roll_raw + 1;
-		roll = (-1)* ((double) roll_raw) * YAW_ROLL_COUNT_TO_DEGREE;
-	}else{
-		roll = ((double) roll_raw) * YAW_ROLL_COUNT_TO_DEGREE;
-	}	
-
-/*Convert from 2s complement to decimal*/
-	if(pitch_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		pitch_raw = ~pitch_raw;		//
-		pitch_raw = pitch_raw + 1;
-		pitch = (-1)* ((double) pitch_raw) * YAW_ROLL_COUNT_TO_DEGREE;
-	}else{
-		pitch = ((double) pitch_raw) * YAW_ROLL_COUNT_TO_DEGREE;
-	}	
+	convert_2s_to_x( &yaw_raw,  YAW_ROLL_COUNT_TO_DEGREE,  &yaw);
+	convert_2s_to_x( &pitch_raw,  YAW_ROLL_COUNT_TO_DEGREE,  &pitch);
+	convert_2s_to_x( &roll_raw,  YAW_ROLL_COUNT_TO_DEGREE,  &roll);
 
 	if (print_data_to_console_flag){
 		printf("yaw: % 3.4f, pitch: % 3.4f, roll: % 3.4f \n",yaw,pitch,roll);
@@ -148,32 +103,9 @@ uint8_t ADIS_16480_Interface::read_linear_acceleration(double* x_acc,  double* y
 	y_acc_raw = rx[2];
 	z_acc_raw = rx[3];
 
-/*Convert from 2s complement to decimal*/
-	if(x_acc_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		x_acc_raw = ~x_acc_raw;		//
-		x_acc_raw = x_acc_raw + 1;
-		*x_acc = (-1)* ((double) x_acc_raw) * LINEAR_ACC_COUNT_TO_g;
-	}else{
-		*x_acc = (double) x_acc_raw * LINEAR_ACC_COUNT_TO_g;
-	}
-
-/*Convert from 2s complement to decimal*/
-	if(y_acc_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		y_acc_raw = ~y_acc_raw;		//
-		y_acc_raw = y_acc_raw + 1;
-		*y_acc = (-1)* ((double) y_acc_raw) * LINEAR_ACC_COUNT_TO_g;
-	}else{
-		*y_acc = (double) y_acc_raw * LINEAR_ACC_COUNT_TO_g;
-	}
-
-/*Convert from 2s complement to decimal*/
-	if(z_acc_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		z_acc_raw = ~z_acc_raw;		//
-		z_acc_raw = z_acc_raw + 1;
-		*z_acc = (-1)* ((double) z_acc_raw) * LINEAR_ACC_COUNT_TO_g;
-	}else{
-		*z_acc = (double) z_acc_raw * LINEAR_ACC_COUNT_TO_g;
-	}
+	convert_2s_to_x( &x_acc_raw,  LINEAR_ACC_COUNT_TO_g,  x_acc);
+	convert_2s_to_x( &y_acc_raw,  LINEAR_ACC_COUNT_TO_g,  y_acc);
+	convert_2s_to_x( &z_acc_raw,  LINEAR_ACC_COUNT_TO_g,  z_acc);
 
 	if (print_data_to_console_flag){
 		printf("Accelerations along axis: x: % 2.4fg, y: % 2.4f, z: % 2.4f \n",*x_acc,*y_acc,*z_acc);
@@ -198,32 +130,9 @@ uint8_t ADIS_16480_Interface::read_linear_acceleration(void) {
 	y_acc_raw = rx[2];
 	z_acc_raw = rx[3];
 
-/*Convert from 2s complement to decimal*/
-	if(x_acc_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		x_acc_raw = ~x_acc_raw;		//
-		x_acc_raw = x_acc_raw + 1;
-		x_acceleration = (-1)* ((double) x_acc_raw) * LINEAR_ACC_COUNT_TO_g;
-	}else{
-		x_acceleration = (double) x_acc_raw * LINEAR_ACC_COUNT_TO_g;
-	}
-
-/*Convert from 2s complement to decimal*/
-	if(y_acc_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		y_acc_raw = ~y_acc_raw;		//
-		y_acc_raw = y_acc_raw + 1;
-		y_acceleration = (-1)* ((double) y_acc_raw) * LINEAR_ACC_COUNT_TO_g;
-	}else{
-		y_acceleration = (double) y_acc_raw * LINEAR_ACC_COUNT_TO_g;
-	}
-
-/*Convert from 2s complement to decimal*/
-	if(z_acc_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		z_acc_raw = ~z_acc_raw;		//
-		z_acc_raw = z_acc_raw + 1;
-		z_acceleration = (-1)* ((double) z_acc_raw) * LINEAR_ACC_COUNT_TO_g;
-	}else{
-		z_acceleration = (double) z_acc_raw * LINEAR_ACC_COUNT_TO_g;
-	}
+	convert_2s_to_x( &x_acc_raw,  LINEAR_ACC_COUNT_TO_g,  &x_acceleration);
+	convert_2s_to_x( &y_acc_raw,  LINEAR_ACC_COUNT_TO_g,  &y_acceleration);
+	convert_2s_to_x( &z_acc_raw,  LINEAR_ACC_COUNT_TO_g,  &z_acceleration);
 
 	if (print_data_to_console_flag){
 		printf("Accelerations along axis: x: % 2.4fg, y: % 2.4f, z: % 2.4f \n",x_acceleration, y_acceleration, z_acceleration);
@@ -250,35 +159,10 @@ uint8_t ADIS_16480_Interface::read_linear_velocity(double* x_vel,  double* y_vel
 	y_vel_raw = rx[2];
 	z_vel_raw = rx[3];
 
-//Convert from 2s complement to decimal/
-	if (print_data_to_console_flag){
-		printf("raw velocities: x 0x%04x, y 0x%04x, z 0x%04x\n",x_vel_raw, y_vel_raw, z_vel_raw);
-	}
-	if(x_vel_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		x_vel_raw = ~x_vel_raw;		//
-		x_vel_raw = x_vel_raw + 1;
-		*x_vel = (-1)* ((double) x_vel_raw) * LINEAR_VEL_COUNT_TO_mpsec;
-	}else{
-		*x_vel = (double) x_vel_raw * LINEAR_VEL_COUNT_TO_mpsec;
-	}
-
-//Convert from 2s complement to decimal/
-	if(y_vel_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		y_vel_raw = ~y_vel_raw;		//
-		y_vel_raw = y_vel_raw + 1;
-		*y_vel = (-1)* ((double) y_vel_raw) * LINEAR_VEL_COUNT_TO_mpsec;
-	}else{
-		*y_vel = (double) y_vel_raw * LINEAR_VEL_COUNT_TO_mpsec;
-	}
-
-//Convert from 2s complement to decimal
-	if(z_vel_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		z_vel_raw = ~z_vel_raw;		//
-		z_vel_raw = z_vel_raw + 1;
-		*z_vel = (-1)* ((double) z_vel_raw) * LINEAR_VEL_COUNT_TO_mpsec;
-	}else{
-		*z_vel = (double) z_vel_raw * LINEAR_VEL_COUNT_TO_mpsec;
-	}	
+	convert_2s_to_x( &x_vel_raw,  LINEAR_VEL_COUNT_TO_mpsec,  x_vel);
+	convert_2s_to_x( &y_vel_raw,  LINEAR_VEL_COUNT_TO_mpsec,  y_vel);
+	convert_2s_to_x( &z_vel_raw,  LINEAR_VEL_COUNT_TO_mpsec,  z_vel);
+	
 
 	if (print_data_to_console_flag){
 		printf("Velocities along axis: x: % 3.15fm/s, y: % 3.15fm/s, z: % 3.15fm/s \n",*x_vel,*y_vel,*z_vel);
@@ -305,35 +189,9 @@ uint8_t ADIS_16480_Interface::read_linear_velocity(void) {
 	z_vel_raw = rx[3];
 
 //Convert from 2s complement to decimal/
-	if (print_data_to_console_flag){
-		printf("velocities: x 0x%04x, y 0x%04x, z 0x%04x\n",x_vel_raw, y_vel_raw, z_vel_raw);
-	}
-
-	if(x_vel_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		x_vel_raw = ~x_vel_raw;		//
-		x_vel_raw = x_vel_raw + 1;
-		x_velocity = (-1)* ((double) x_vel_raw) * LINEAR_VEL_COUNT_TO_mpsec;
-	}else{
-		x_velocity = (double) x_vel_raw * LINEAR_VEL_COUNT_TO_mpsec;
-	}
-
-//Convert from 2s complement to decimal/
-	if(y_vel_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		y_vel_raw = ~y_vel_raw;		//
-		y_vel_raw = y_vel_raw + 1;
-		y_velocity = (-1)* ((double) y_vel_raw) * LINEAR_VEL_COUNT_TO_mpsec;
-	}else{
-		y_velocity = (double) y_vel_raw * LINEAR_VEL_COUNT_TO_mpsec;
-	}
-
-//Convert from 2s complement to decimal
-	if(z_vel_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		z_vel_raw = ~z_vel_raw;		//
-		z_vel_raw = z_vel_raw + 1;
-		z_velocity = (-1)* ((double) z_vel_raw) * LINEAR_VEL_COUNT_TO_mpsec;
-	}else{
-		z_velocity = (double) z_vel_raw * LINEAR_VEL_COUNT_TO_mpsec;
-	}	
+	convert_2s_to_x( &x_vel_raw,  LINEAR_VEL_COUNT_TO_mpsec,  &x_velocity);
+	convert_2s_to_x( &y_vel_raw,  LINEAR_VEL_COUNT_TO_mpsec,  &y_velocity);
+	convert_2s_to_x( &z_vel_raw,  LINEAR_VEL_COUNT_TO_mpsec,  &z_velocity);
 
 	if (print_data_to_console_flag){
 		printf("Velocities along axis: x: % 3.15fm/s, y: % 3.15fm/s, z: % 3.15fm/s \n",x_velocity, y_velocity, z_velocity);
@@ -399,33 +257,9 @@ uint8_t ADIS_16480_Interface::read_YPR_lin_Acc(void) {
 
 
 //!!!!!!!!!!!!!!! Convert YPR!!!!!!!!!!!!!!!!!!!!!!
-
-/*Convert from 2s complement to decimal*/
-	if(yaw_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		yaw_raw = ~yaw_raw;		//
-		yaw_raw = yaw_raw + 1;
-		yaw = (-1)* ((double) yaw_raw) * YAW_ROLL_COUNT_TO_DEGREE;
-	}else{
-		yaw = (double) yaw_raw * YAW_ROLL_COUNT_TO_DEGREE;
-	}
-
-/*Convert from 2s complement to decimal*/
-	if(roll_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		roll_raw = ~roll_raw;		//
-		roll_raw = roll_raw + 1;
-		roll = (-1)* ((double) roll_raw) * YAW_ROLL_COUNT_TO_DEGREE;
-	}else{
-		roll = ((double) roll_raw) * YAW_ROLL_COUNT_TO_DEGREE;
-	}	
-
-/*Convert from 2s complement to decimal*/
-	if(pitch_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		pitch_raw = ~pitch_raw;		//
-		pitch_raw = pitch_raw + 1;
-		pitch = (-1)* ((double) pitch_raw) * YAW_ROLL_COUNT_TO_DEGREE;
-	}else{
-		pitch = ((double) pitch_raw) * YAW_ROLL_COUNT_TO_DEGREE;
-	}	
+	convert_2s_to_x( &yaw_raw,  YAW_ROLL_COUNT_TO_DEGREE,  &yaw);
+	convert_2s_to_x( &pitch_raw,  YAW_ROLL_COUNT_TO_DEGREE,  &pitch);
+	convert_2s_to_x( &roll_raw,  YAW_ROLL_COUNT_TO_DEGREE,  &roll);
 
 	if (print_data_to_console_flag){
 		printf("yaw: % 3.4f, pitch: % 3.4f, roll: % 3.4f \n",yaw,pitch,roll);
@@ -433,33 +267,10 @@ uint8_t ADIS_16480_Interface::read_YPR_lin_Acc(void) {
 
 
 //!!!!!!!!!!!!!!! Convert the linear acceleration!!!!!!!!!!!!!!!!!!!!!!
-	/*Convert from 2s complement to decimal*/
-	if(x_acc_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		x_acc_raw = ~x_acc_raw;		//
-		x_acc_raw = x_acc_raw + 1;
-		x_acceleration = (-1)* ((double) x_acc_raw) * LINEAR_ACC_COUNT_TO_g;
-	}else{
-		x_acceleration = (double) x_acc_raw * LINEAR_ACC_COUNT_TO_g;
-	}
-
-/*Convert from 2s complement to decimal*/
-	if(y_acc_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		y_acc_raw = ~y_acc_raw;		//
-		y_acc_raw = y_acc_raw + 1;
-		y_acceleration = (-1)* ((double) y_acc_raw) * LINEAR_ACC_COUNT_TO_g;
-	}else{
-		y_acceleration = (double) y_acc_raw * LINEAR_ACC_COUNT_TO_g;
-	}
-
-/*Convert from 2s complement to decimal*/
-	if(z_acc_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		z_acc_raw = ~z_acc_raw;		//
-		z_acc_raw = z_acc_raw + 1;
-		z_acceleration = (-1)* ((double) z_acc_raw) * LINEAR_ACC_COUNT_TO_g;
-	}else{
-		z_acceleration = (double) z_acc_raw * LINEAR_ACC_COUNT_TO_g;
-	}
-
+	convert_2s_to_x( &x_acc_raw,  LINEAR_ACC_COUNT_TO_g,  &x_acceleration);
+	convert_2s_to_x( &y_acc_raw,  LINEAR_ACC_COUNT_TO_g,  &y_acceleration);
+	convert_2s_to_x( &z_acc_raw,  LINEAR_ACC_COUNT_TO_g,  &z_acceleration);
+	
 	if (print_data_to_console_flag){
 		printf("Accelerations along axis: x: % 2.4fg, y: % 2.4f, z: % 2.4f \n",x_acceleration, y_acceleration, z_acceleration);
 	}
@@ -500,71 +311,36 @@ uint8_t ADIS_16480_Interface::read_YPR_lin_Vel(void) {
 	z_vel_raw = rx[6];
 
 //!!!!!!!!!!!!!!! Convert YPR!!!!!!!!!!!!!!!!!!!!!!
-
-/*Convert from 2s complement to decimal*/
-	if(yaw_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		yaw_raw = ~yaw_raw;		//
-		yaw_raw = yaw_raw + 1;
-		yaw = (-1)* ((double) yaw_raw) * YAW_ROLL_COUNT_TO_DEGREE;
-	}else{
-		yaw = (double) yaw_raw * YAW_ROLL_COUNT_TO_DEGREE;
-	}
-
-/*Convert from 2s complement to decimal*/
-	if(roll_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		roll_raw = ~roll_raw;		//
-		roll_raw = roll_raw + 1;
-		roll = (-1)* ((double) roll_raw) * YAW_ROLL_COUNT_TO_DEGREE;
-	}else{
-		roll = ((double) roll_raw) * YAW_ROLL_COUNT_TO_DEGREE;
-	}	
-
-/*Convert from 2s complement to decimal*/
-	if(pitch_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		pitch_raw = ~pitch_raw;		//
-		pitch_raw = pitch_raw + 1;
-		pitch = (-1)* ((double) pitch_raw) * YAW_ROLL_COUNT_TO_DEGREE;
-	}else{
-		pitch = ((double) pitch_raw) * YAW_ROLL_COUNT_TO_DEGREE;
-	}	
+	convert_2s_to_x( &yaw_raw,  YAW_ROLL_COUNT_TO_DEGREE,  &yaw);
+	convert_2s_to_x( &pitch_raw,  YAW_ROLL_COUNT_TO_DEGREE,  &pitch);
+	convert_2s_to_x( &roll_raw,  YAW_ROLL_COUNT_TO_DEGREE,  &roll);
 
 	if (print_data_to_console_flag){
 		printf("yaw: % 3.4f, pitch: % 3.4f, roll: % 3.4f \n",yaw,pitch,roll);
 	}
 
 //Convert from 2s complement to decimal/
-	if (print_data_to_console_flag){
-		printf("velocities: x 0x%04x, y 0x%04x, z 0x%04x\n",x_vel_raw, y_vel_raw, z_vel_raw);
-	}
 
-	if(x_vel_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		x_vel_raw = ~x_vel_raw;		//
-		x_vel_raw = x_vel_raw + 1;
-		x_velocity = (-1)* ((double) x_vel_raw) * LINEAR_VEL_COUNT_TO_mpsec;
-	}else{
-		x_velocity = (double) x_vel_raw * LINEAR_VEL_COUNT_TO_mpsec;
-	}
-
-//Convert from 2s complement to decimal/
-	if(y_vel_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		y_vel_raw = ~y_vel_raw;		//
-		y_vel_raw = y_vel_raw + 1;
-		y_velocity = (-1)* ((double) y_vel_raw) * LINEAR_VEL_COUNT_TO_mpsec;
-	}else{
-		y_velocity = (double) y_vel_raw * LINEAR_VEL_COUNT_TO_mpsec;
-	}
-
-//Convert from 2s complement to decimal
-	if(z_vel_raw & BITMASK_TEST_2s_NEG){ //if negative 
-		z_vel_raw = ~z_vel_raw;		//
-		z_vel_raw = z_vel_raw + 1;
-		z_velocity = (-1)* ((double) z_vel_raw) * LINEAR_VEL_COUNT_TO_mpsec;
-	}else{
-		z_velocity = (double) z_vel_raw * LINEAR_VEL_COUNT_TO_mpsec;
-	}	
+	convert_2s_to_x( &x_vel_raw,  LINEAR_VEL_COUNT_TO_mpsec,  &x_velocity);
+	convert_2s_to_x( &y_vel_raw,  LINEAR_VEL_COUNT_TO_mpsec,  &y_velocity);
+	convert_2s_to_x( &z_vel_raw,  LINEAR_VEL_COUNT_TO_mpsec,  &z_velocity);
 
 	if (print_data_to_console_flag){
 		printf("Velocities along axis: x: % 3.15fm/s, y: % 3.15fm/s, z: % 3.15fm/s \n",x_velocity, y_velocity, z_velocity);
 	}
 	return 1;
+}
+ 
+//convert the 16-bit 2s complement data to binary
+int ADIS_16480_Interface::convert_2s_to_x(uint16_t* raw_data, double conversion_rate, double* converted_data){
+	
+	if(*raw_data & BITMASK_TEST_2s_NEG){ 	// if negative 
+		*raw_data = ~*raw_data;				// invert it
+		*raw_data = *raw_data + 1;			
+		*converted_data = (-1) * (((double) *raw_data) * conversion_rate);
+	}else{
+		*converted_data = ((double) *raw_data) * conversion_rate;
+	}	
+	return 1;
+
 }

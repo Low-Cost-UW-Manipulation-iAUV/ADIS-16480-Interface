@@ -159,7 +159,10 @@ private:
 
 
 //data_out.c/.h
-	double data_ready_period_usec;  
+	double data_ready_period_usec;
+	int convert_2s_to_x(uint16_t* , double , double* );
+	int HR_convert_2s_to_x(uint32_t* , double , double* );
+  
 
 	spi* spi_dev ;
 	uint16_t tx[35], rx[35];	//Predefine the rx and tx register

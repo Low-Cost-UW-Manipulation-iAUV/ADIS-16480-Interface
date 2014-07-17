@@ -4,8 +4,7 @@
  * Author: Raphael Nagel
  * Date: 04/June/2014
  */
-#define FILENAME_TO_PRINT_DATA_TO "ADIS-Data-#-%d-10-Jul-2014-16-11"
-
+#define FILENAME_TO_PRINT_DATA_TO "ADIS-Data-#-%d-17-Jul-2014-12-32"
 
 
 /*standard defines, etc (stolen from libsoc test files)*/
@@ -276,7 +275,7 @@ int main()
   
 
   my_adis.print_data_console(ON);
-for(i=0;i<10;i++){
+for(i=0;i<2;i++){
     status = my_adis.read_product_id();    //best testing - expect 0x4060
     if(status){
       
@@ -287,8 +286,8 @@ for(i=0;i<10;i++){
       status = my_adis.read_error_flags();
       libsoc_set_debug(0);
       my_adis.set_DEC_RATE(8);
-      // put the ADIS in Body Frame mode
-      my_adis.clear_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL);
+      // take  the ADIS out of Body Frame mode
+      my_adis.set_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL);
       my_adis.print_data_console(OFF);
 
       //This needs to be done in this sequence. If you dont do it it wont write the right stuff to the file...
