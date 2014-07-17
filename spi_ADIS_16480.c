@@ -270,6 +270,9 @@ int main()
   //reset the adis from previous settings
   my_adis.do_Software_reset();
   sleep(2);
+  
+  my_adis.do_Tare();
+  sleep(2);
 
 
   // Set the my_adis  object as the object containing the callee
@@ -280,18 +283,20 @@ int main()
 for(i=0;i<2;i++){
     status = my_adis.read_product_id();    //best testing - expect 0x4060
     if(status){
-      printf("!!!!!!!! GET READY for file nr: %d!!!!!!!!!!!!!!!\n", i);
 
       status = my_adis.read_self_test();
       status = my_adis.read_error_flags();
       libsoc_set_debug(0);
       my_adis.set_DEC_RATE(8);
       // take  the ADIS out of Body Frame mode
-      my_adis.clear_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL);
+     // my_adis.set_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL);
       my_adis.print_data_console(OFF);
 
       //This needs to be done in this sequence. If you dont do it it wont write the right stuff to the file...
       my_adis.print_data_file(i, ON, ON, ON, OFF, OFF, OFF);
+      
+      printf("!!!!!!!! GET READY for file nr: %d!!!!!!!!!!!!!!!\n", i);
+      sleep(5);
 
       //The first callback will usually have 'missed' 54/55 interrupts. This is due to setup time on the function.
       my_adis.setup_interrupt_detection(ON);

@@ -193,7 +193,7 @@ uint8_t ADIS_16480_Interface::write_word(uint16_t page, uint16_t base_address, u
   rx[3] = 0;
 
   libsoc_spi_rw(spi_dev, tx, rx, 8);  
-
+  
   tx[0] = page;             //Switch to page 
   tx[1] = base_address;
   tx[2] = PG0;
@@ -201,7 +201,7 @@ uint8_t ADIS_16480_Interface::write_word(uint16_t page, uint16_t base_address, u
   rx[0] = 0;
   rx[1] = 0;
   rx[2] = 0;
-
+  usleep(10);
   libsoc_spi_rw(spi_dev, tx, rx, 6);  
 
 //Check that the write was successfull.
