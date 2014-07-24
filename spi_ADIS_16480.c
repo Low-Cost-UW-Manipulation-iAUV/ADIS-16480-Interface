@@ -280,23 +280,28 @@ int main()
   
 
   my_adis.print_data_console(ON);
-for(i=0;i<2;i++){
+for(i=0;i<10;i++){
     status = my_adis.read_product_id();    //best testing - expect 0x4060
     if(status){
 
       status = my_adis.read_self_test();
       status = my_adis.read_error_flags();
       libsoc_set_debug(0);
-      my_adis.set_DEC_RATE(8);
-      // take  the ADIS out of Body Frame mode
-     // my_adis.set_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL);
+      my_adis.set_DEC_RATE(0);
+      
+      // take  the ADIS into Body Frame mode
+      my_adis.set_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL);
+
+      //remove the gravity from the sensors.
+      //my_adis.set_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_GRAVRM);
+      
       my_adis.print_data_console(OFF);
 
       //This needs to be done in this sequence. If you dont do it it wont write the right stuff to the file...
       my_adis.print_data_file(i, ON, ON, ON, OFF, OFF, OFF);
       
       printf("!!!!!!!! GET READY for file nr: %d!!!!!!!!!!!!!!!\n", i);
-      sleep(5);
+      sleep(3);
 
       //The first callback will usually have 'missed' 54/55 interrupts. This is due to setup time on the function.
       my_adis.setup_interrupt_detection(ON);
