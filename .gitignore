@@ -1,3 +1,12 @@
 *.txt
+cmake_install.cmake
+build/
+bin/
+lib/
+msg_gen/
+srv_gen/
+*~
 
-
+*/src/*/cfg
+*/src/*/msg
+*/src/*/srv
