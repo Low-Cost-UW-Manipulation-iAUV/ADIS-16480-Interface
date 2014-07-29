@@ -4,7 +4,7 @@
  * Author: Raphael Nagel
  * Date: 04/June/2014
  */
-#define FILENAME_TO_PRINT_DATA_TO "ADIS-Data-#-%d-17-Jul-2014-12-32"
+#define FILENAME_TO_PRINT_DATA_TO "ADIS-Data-#-%d-24-Jul-2014-17-55"
 
 
 /*standard defines, etc (stolen from libsoc test files)*/
@@ -271,7 +271,7 @@ int main()
   my_adis.do_Software_reset();
   sleep(2);
   
-  my_adis.do_Tare();
+  //my_adis.do_Tare();
   sleep(2);
 
 
@@ -280,7 +280,7 @@ int main()
   
 
   my_adis.print_data_console(ON);
-for(i=0;i<10;i++){
+for(i=0;i<3;i++){
     status = my_adis.read_product_id();    //best testing - expect 0x4060
     if(status){
 
@@ -295,6 +295,10 @@ for(i=0;i<10;i++){
       //remove the gravity from the sensors.
       //my_adis.set_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_GRAVRM);
       
+      //lower the accelerometer disturbance detection threshold
+     // my_adis.write_word(PG3, MAG_DISTB_THR, 0x0008);
+     // my_adis.write_word(PG3, ACC_DISTB_THR, 0x0008);
+
       my_adis.print_data_console(OFF);
 
       //This needs to be done in this sequence. If you dont do it it wont write the right stuff to the file...
@@ -312,7 +316,7 @@ for(i=0;i<10;i++){
       sleep(1);
       printf("!!!!!!!! GO!!!!!!!!!!!!!!!\n");
 
-      sleep(9);
+      sleep(29);
 
 
       my_adis.disable_Interrupt_ADIS();

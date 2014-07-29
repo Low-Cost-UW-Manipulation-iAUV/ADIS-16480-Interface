@@ -58,6 +58,9 @@ static uint16_t tx_old[35], rx_old[35];	//Predefine the rx and tx register
 #define BITMASK_WRITE_UPPER_8_BITS_BEFORE_SHIFT 0xFF00
 #define SHIFTDOWN_UPPER_8_BITS 8
 
+//Disturbance Detection Registers
+#define ACC_DISTB_THR 0x5600
+#define MAG_DISTB_THR 0x5800
 
 /*ADIS 16480 Register Pages*/
 
