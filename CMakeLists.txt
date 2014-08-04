@@ -41,8 +41,6 @@ add_message_files(
 
 
 
-
-
 ## Generate actions in the 'action' folder
 # add_action_files(
 #   FILES
@@ -63,7 +61,7 @@ catkin_package(
 #  DEPENDS system_lib
 )
 
-
+LINK_DIRECTORIES( LIBSOC_LIBRARY  /usr/local/lib/)
 
 add_library(ADIS_16480_Interface
   src/spi_ADIS_16480.cpp
@@ -81,7 +79,8 @@ add_library(ADIS_16480_Interface
   )
 
 target_link_libraries(ADIS_16480_Interface 
-  /usr/local/lib/libsoc.so
+  /usr/local/lib/libsoc.
+  LIBSOC_LIBRARY
   ${roscpp_LIBRARIES}
   )
 
