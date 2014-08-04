@@ -87,6 +87,7 @@ add_library(ADIS_16480_Interface
 include_directories(
   ${catkin_INCLUDE_DIRS}
   ${PROJECT_SOURCE_DIR}/include
+  /usr/local/include
 
 )
 FIND_LIBRARY(RESULT libsoc.so PATHS /usr/local/lib/)
