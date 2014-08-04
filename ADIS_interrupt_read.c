@@ -37,7 +37,7 @@ int ADIS_16480_Interface::job_for_callback(){
       return 1;
       break;
 
-    case IR_R_YPR:
+    case IR_R_LR_YPR:
       read_euler_YPR_angles();
       break;
 
