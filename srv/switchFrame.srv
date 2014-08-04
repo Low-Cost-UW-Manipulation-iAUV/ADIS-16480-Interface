@@ -1,4 +1,3 @@
 int8 new_frame
 ---
 int8 current_frame
-int8 confirm
