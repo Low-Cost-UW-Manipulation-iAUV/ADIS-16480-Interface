@@ -10,11 +10,11 @@
 
 //control the switch statement in the callback job function
 #define IR_R_NOTHING 0
-#define IR_R_YPR 1
-#define IR_R_LACC 2 
-#define IR_R_LVEL 3 
-#define IR_R_YPR_LACC 4
-#define IR_R_YPR_LVEL 5
+#define IR_R_LR_YPR 1
+#define IR_R_LR_LACC 2 
+#define IR_R_LR_LVEL 3 
+#define IR_R_LR_YPR_LACC 4
+#define IR_R_LR_YPR_LVEL 5
 #define IR_R_HR_YPR_lACC 6
 #define IR_R_HR_YPR_lVEL 7
 
