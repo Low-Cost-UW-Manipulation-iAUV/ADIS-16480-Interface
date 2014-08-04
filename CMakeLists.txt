@@ -55,9 +55,9 @@ add_message_files(
  )
 
 catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES ADIS_16480_Interface
-  CATKIN_DEPENDS roscpp std_msgs message_runtime 
+#  INCLUDE_DIRS include
+#  LIBRARIES ADIS_16480_Interface
+#  CATKIN_DEPENDS roscpp std_msgs message_runtime 
 #  DEPENDS system_lib
 )
 
