@@ -14,8 +14,8 @@
 #include <string.h> 
 //Libsoc library includes
 
-#include "libsoc_gpio.h"
-#include "libsoc_debug.h"
+#include <libsoc_gpio.h>
+#include <libsoc_debug.h>
 
 //Our includes 
 #include "adis_16480_driver/ADIS_interrupt_read.h"
