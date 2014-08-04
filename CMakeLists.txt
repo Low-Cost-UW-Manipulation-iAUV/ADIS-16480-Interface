@@ -103,12 +103,12 @@ FIND_LIBRARY(RESULT libsoc.so PATHS /usr/local/lib/)
 
  target_link_libraries(adis_16480_driver_node
    ${catkin_LIBRARIES} 
-   libsoc
+   /usr/local/lib/libsoc.so
    ADIS_16480_Interface
 
    #${LIBSOC_LIBRARY}
  )
-add_dependencies(ADIS_16480_Interface ${PROJECT_NAME}_gencpp)
+#add_dependencies(ADIS_16480_Interface ${PROJECT_NAME}_gencpp)
 #############
 ## Install ##
 #############
