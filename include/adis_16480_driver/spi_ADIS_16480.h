@@ -19,9 +19,9 @@
 #include <sys/time.h>
 
 //Libsoc library includes
-#include "libsoc_gpio.h"
-#include "libsoc_spi.h"
-#include "libsoc_debug.h" 
+#include <libsoc_gpio.h>
+#include <libsoc_spi.h>
+#include <libsoc_debug.h> 
 
 #include "adis_16480_driver/driver_services.h"
 
