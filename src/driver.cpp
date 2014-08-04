@@ -25,10 +25,6 @@
 #include <signal.h>	
 
 
-//Libsoc library includes
-//#include "libsoc_spi.h"
-#include "libsoc_debug.h"  
-
 //ADIS Interface includes
 #include "adis_16480_driver/wrapper_C_library_callback_to_Cpp.h"
 #include "adis_16480_driver/ADIS_interrupt_read.h"
