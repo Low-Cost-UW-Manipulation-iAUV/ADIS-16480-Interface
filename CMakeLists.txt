@@ -97,7 +97,7 @@ FIND_LIBRARY(RESULT libsoc.so PATHS /usr/local/lib/)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
- add_dependencies(adis_16480_driver_node ADIS_16480_Interface_gencpp adis_16480_driver_generate_messages_cpp)
+ add_dependencies(adis_16480_driver_node adis_16480_driver_gencpp adis_16480_driver_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
 
