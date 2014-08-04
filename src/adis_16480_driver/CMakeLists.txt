@@ -100,12 +100,6 @@ include_directories(
 
 )
 
-## Declare a cpp library
-# add_library(adis_16480_driver
-#   src/${PROJECT_NAME}/adis_16480_driver.cpp
-# )
-
-
 ## Declare a cpp executable
  add_executable(adis_16480_driver_node src/driver.cpp)
 

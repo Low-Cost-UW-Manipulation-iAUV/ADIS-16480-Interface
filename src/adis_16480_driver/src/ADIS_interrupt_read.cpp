@@ -49,19 +49,19 @@ int ADIS_16480_Interface::job_for_callback(){
       read_euler_YPR_angles();
       break;
 
-    case IR_R_LACC:
+    case IR_R_LR_LACC:
       read_linear_acceleration();      
       break;  
 
-    case IR_R_LVEL:
+    case IR_R_LR_LVEL:
     read_linear_velocity();
       break;        
 
-    case IR_R_YPR_LACC:
+    case IR_R_LR_YPR_LACC:
       read_YPR_lin_Acc();
       break;
 
-    case IR_R_YPR_LVEL:
+    case IR_R_LR_YPR_LVEL:
       read_YPR_lin_Vel();    
       break;
 
@@ -115,7 +115,7 @@ int ADIS_16480_Interface::setup_interrupt_ADIS(int what_to_read)
   // Check the direction
   if (libsoc_gpio_get_direction(gpio_input) != INPUT)
   {
-    printf("ADIS16480: IR Read - Failed to set data_ready pin direction to INPUT\n");
+    ROS_ERROR("ADIS_16480_Driver: IR Read - Failed to set data_ready pin direction to INPUT\n");
   if (gpio_input)
   {
     // Free gpio request memory
@@ -133,7 +133,7 @@ int ADIS_16480_Interface::setup_interrupt_ADIS(int what_to_read)
   // Check Edge
   if (libsoc_gpio_get_edge(gpio_input) != RISING)
   {
-    printf("ADIS16480: IR Read - Failed to set trigger to RISING edge \n");
+    printf("ADIS_16480_Driver: IR Read - Failed to set trigger to RISING edge \n");
   if (gpio_input)
   {
     // Free gpio request memory
