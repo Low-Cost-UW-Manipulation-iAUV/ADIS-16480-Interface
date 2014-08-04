@@ -16,9 +16,6 @@
 #include <string.h>
 #include <sys/time.h>
 
-//Libsoc library includes
-#include <libsoc_spi.h>
-#include <libsoc_debug.h>  
 
 //ADIS Interface includes
 #include "adis_16480_driver/spi_ADIS_16480.h"
