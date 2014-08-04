@@ -61,8 +61,6 @@ catkin_package(
 #  DEPENDS system_lib
 )
 
-LINK_DIRECTORIES( LIBSOC_LIBRARY  /usr/local/lib/)
-
 add_library(ADIS_16480_Interface
   src/spi_ADIS_16480.cpp
   src/drivers_services.cpp
@@ -78,13 +76,6 @@ add_library(ADIS_16480_Interface
   src/wrapper_C_library_callback_to_Cpp.cpp
   )
 
-target_link_libraries(ADIS_16480_Interface 
-  /usr/local/lib/libsoc.
-  LIBSOC_LIBRARY
-  ${roscpp_LIBRARIES}
-  )
-
-
 
 ###########
 ## Build ##
@@ -98,6 +89,7 @@ include_directories(
   ${PROJECT_SOURCE_DIR}/include
 
 )
+FIND_LIBRARY(RESULT libsoc.so PATHS /usr/local/lib/)
 
 ## Declare a cpp executable
  add_executable(adis_16480_driver_node src/driver.cpp)
@@ -107,11 +99,10 @@ include_directories(
  add_dependencies(adis_16480_driver_node ADIS_16480_Interface_gencpp adis_16480_driver_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
-#find_library(LIBSOC_LIBRARY libsoc /usr/local/lib)
 
  target_link_libraries(adis_16480_driver_node
    ${catkin_LIBRARIES} 
-   /usr/local/lib/libsoc.so
+   libsoc
    ADIS_16480_Interface
 
    #${LIBSOC_LIBRARY}
