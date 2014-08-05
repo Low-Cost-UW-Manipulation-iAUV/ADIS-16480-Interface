@@ -5,7 +5,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
-  genmsg
+  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -57,7 +57,7 @@ add_message_files(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES ADIS_16480_Interface
-#  CATKIN_DEPENDS roscpp std_msgs message_runtime 
+  CATKIN_DEPENDS message_runtime roscpp std_msgs
 #  DEPENDS system_lib
 )
 
@@ -83,7 +83,7 @@ add_library(ADIS_16480_Interface
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 # include_directories(include)
-include_directories(
+include_directories( include
   ${catkin_INCLUDE_DIRS}
   ${PROJECT_SOURCE_DIR}/include
   /usr/local/include
