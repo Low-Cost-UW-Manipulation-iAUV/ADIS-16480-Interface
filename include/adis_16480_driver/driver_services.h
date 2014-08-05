@@ -25,15 +25,15 @@ W*    Created: 05/Nov/2013
 //#include "adis_16480_driver/spi_ADIS_16480.h"
 
 #include "adis_16480_driver/HR_YPR_lACC.h"
-#include "adis_16480_driver/switchDataOutMode.h"
-#include "adis_16480_driver/switchFrame.h"
-#include "adis_16480_driver/doEKFReset.h"
-#include "adis_16480_driver/doSoftReset.h"
-#include "adis_16480_driver/doTare.h"
-#include "adis_16480_driver/pause.h"
-#include "adis_16480_driver/setFilterCoeffs.h"
-#include "adis_16480_driver/startstopFilter.h"
-#include "adis_16480_driver/setDecRate.h"
+#include "adis_16480_driver/SwitchDataOutMode.h"
+#include "adis_16480_driver/SwitchFrame.h"
+#include "adis_16480_driver/DoEKFReset.h"
+#include "adis_16480_driver/DoSoftReset.h"
+#include "adis_16480_driver/DoTare.h"
+#include "adis_16480_driver/Pause.h"
+#include "adis_16480_driver/SetFilterCoeffs.h"
+#include "adis_16480_driver/StartstopFilter.h"
+#include "adis_16480_driver/SetDecRate.h"
 
 class ADIS_16480_Interface;
 

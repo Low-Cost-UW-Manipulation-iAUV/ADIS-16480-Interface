@@ -28,15 +28,15 @@ add_message_files(
 ## Generate services in the 'srv' folder
  add_service_files(
    FILES
-   switchDataOutMode.srv
-   switchFrame.srv
-   doSoftReset.srv
-   doEKFReset.srv
-   doTare.srv
-   pause.srv
-   setFilterCoeffs.srv
-   startstopFilter.srv
-   setDecRate.srv
+   SwitchDataOutMode.srv
+   SwitchFrame.srv
+   DoSoftReset.srv
+   DoEKFReset.srv
+   DoTare.srv
+   Pause.srv
+   SetFilterCoeffs.srv
+   StartstopFilter.srv
+   SetDecRate.srv
  )
 
 

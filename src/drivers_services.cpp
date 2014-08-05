@@ -135,7 +135,7 @@ bool driver_services::startstopFilter(adis_16480_driver::startstopFilter::Reques
 }
 
 bool driver_services::setDecRate(adis_16480_driver::setDecRate::Request &req, adis_16480_driver::setDecRate::Response &res){
-  res.confirm = adis_pointer->set_DEC_RATE(req.DEC_RATE);
+  res.confirm = adis_pointer->set_DEC_RATE(req.dec_rate);
       ROS_INFO("adis_16480_driver - you have set the Dec Rate");
 
   return 0;
