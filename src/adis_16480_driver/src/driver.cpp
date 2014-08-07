@@ -116,9 +116,9 @@ int main(int argc, char** argv){
   
 
 
-  //I'm not sure if spin works with the fancy shutdown stuff I'm trying to use...
-  ros::spin();  
-
+  while (!g_request_shutdown){
+      /*read data from the IMU*/    
+  }  
   my_driver.stop();
  
  return 0;
