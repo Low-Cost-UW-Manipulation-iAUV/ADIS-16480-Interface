@@ -1,0 +1,4 @@
+bool onoff
+int16 msecs
+---
+int8 confirm
