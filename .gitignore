@@ -6,7 +6,7 @@ lib/
 msg_gen/
 srv_gen/
 *~
-devel/*
+devel/
 
 */src/*/cfg
 */src/*/msg
