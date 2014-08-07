@@ -110,7 +110,7 @@ int main(int argc, char** argv){
   ros::ServiceServer service_startstopFilter = n.advertiseService("startstopFilter", &driver_services::startstopFilter, &my_driver);
   ros::ServiceServer service_switchDataOutMode = n.advertiseService("switchDataOutMode", &driver_services::switchDataOutMode, &my_driver);
   ros::ServiceServer service_switchFrame = n.advertiseService("switchFrame", &driver_services::switchFrame, &my_driver);
-  ros::ServiceServer service_switchFrame = n.advertiseService("setDecRate", &driver_services::setDecRate, &my_driver);
+  ros::ServiceServer service_setDecRate = n.advertiseService("setDecRate", &driver_services::setDecRate, &my_driver);
 
 
   
