@@ -92,6 +92,11 @@ int main(int argc, char** argv){
   //Set the my_adis object as the object containing the callee
   wrapper_for_c_library_single_instance_callback::setObj(my_adis) ;
   
+    //get the ball rolling - I think this needs to be done before registering the services...
+  status = my_driver.initiate(&IMU_message);
+  if(status != 0){
+    return 1;
+  }
 
   //Register all Services
   ros::ServiceServer service_doEKFReset = n.advertiseService("doEKFReset", &driver_services::doEKFReset, &my_driver);
@@ -102,15 +107,12 @@ int main(int argc, char** argv){
   ros::ServiceServer service_startstopFilter = n.advertiseService("startstopFilter", &driver_services::startstopFilter, &my_driver);
   ros::ServiceServer service_switchDataOutMode = n.advertiseService("switchDataOutMode", &driver_services::switchDataOutMode, &my_driver);
   ros::ServiceServer service_switchFrame = n.advertiseService("switchFrame", &driver_services::switchFrame, &my_driver);
+  ros::ServiceServer service_switchFrame = n.advertiseService("setDecRate", &driver_services::setDecRate, &my_driver);
 
   //initiate the topic
   ros::Publisher IMU_message = n.advertise<adis_16480_driver::HR_YPR_lACC>("raw_imu", 1000); 
   
-  //get the ball rolling
-  status = my_driver.initiate(&IMU_message);
-  if(status != 0){
-    return 1;
-  }
+
 
   //I'm not sure if spin works with the fancy shutdown stuff I'm trying to use...
   ros::spin();  
