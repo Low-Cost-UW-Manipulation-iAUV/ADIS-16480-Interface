@@ -105,7 +105,7 @@ include_directories(
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
- add_dependencies(adis_16480_driver_node ADIS_16480_Interface_gencpp adis_16480_driver_generate_messages_cpp)
+ add_dependencies(adis_16480_driver_node ADIS_16480_Interface_gencpp adis_16480_driver_generate_messages_cpp ${PROJECT_NAME}_gencpp)
 
 ## Specify libraries to link a library or executable target against
 #find_library(LIBSOC_LIBRARY libsoc /usr/local/lib)
@@ -117,7 +117,7 @@ include_directories(
 
    #${LIBSOC_LIBRARY}
  )
-add_dependencies(ADIS_16480_Interface ${PROJECT_NAME}_gencpp)
+#add_dependencies(ADIS_16480_Interface ${PROJECT_NAME}_gencpp)
 #############
 ## Install ##
 #############

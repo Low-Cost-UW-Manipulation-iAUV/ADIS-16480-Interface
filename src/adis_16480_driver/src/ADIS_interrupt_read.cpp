@@ -103,7 +103,7 @@ int ADIS_16480_Interface::setup_interrupt_ADIS(int what_to_read)
       break;
       ROS_INFO("ADIS_16480_Driver: GPIO PINS successfully requested");
     }else{
-	ROS_INFO("ADIS_16480_Driver: GPIO PINS not yet exported, sleeping 1s, then trying %d. time ",(multiple_tries+1));
+	ROS_INFO("ADIS_16480_Driver: GPIO PINS not yet exported, sleeping 1s, then trying %d. time ",(multiple_tries+2));
 	sleep(1);
 	}
   }
