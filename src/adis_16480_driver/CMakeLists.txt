@@ -6,6 +6,8 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   message_generation
   genmsg
+  std_srvs
+  roscpp_serialization
 )
 
 ## System dependencies are found with CMake's conventions
@@ -54,6 +56,7 @@ add_message_files(
  generate_messages(
    DEPENDENCIES
    std_msgs
+   std_srvs
  )
 
 catkin_package(
