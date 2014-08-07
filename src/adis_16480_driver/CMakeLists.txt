@@ -10,13 +10,18 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp_serialization
 )
 
+include_directories(
+  ${catkin_INCLUDE_DIRS}
+  ${PROJECT_SOURCE_DIR}/include
+)
+
+
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-   FILES
+add_message_files(DIRECTORY msg FILES
    Acceleration.msg
    Velocity.msg
    YPR.msg
@@ -28,8 +33,7 @@ add_message_files(
  )
 
 ## Generate services in the 'srv' folder
- add_service_files(
-   FILES
+ add_service_files(DIRECTORY srv FILES
    switchDataOutMode.srv
    switchFrame.srv
    doSoftReset.srv
@@ -42,33 +46,22 @@ add_message_files(
  )
 
 
-
-
-
-## Generate actions in the 'action' folder
-# add_action_files(
-#   FILES
-#   Action1.action
-#   Action2.action
-# )
-
 ## Generate added messages and services with any dependencies listed here
- generate_messages(
-   DEPENDENCIES
+ generate_messages(DEPENDENCIES
    std_msgs
    std_srvs
  )
 
-catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES ADIS_16480_Interface
-  CATKIN_DEPENDS roscpp std_msgs message_runtime 
-#  DEPENDS system_lib
+catkin_package(CATKIN_DEPENDS 
+  roscpp 
+  std_msgs 
+  std_srvs
+  message_runtime 
 )
 
 
-
-add_library(ADIS_16480_Interface
+set(adis_16480_driver_SRCS
+  src/driver.cpp
   src/spi_ADIS_16480.cpp
   src/drivers_services.cpp
   src/ADIS_interrupt_read.cpp
@@ -83,11 +76,6 @@ add_library(ADIS_16480_Interface
   src/wrapper_C_library_callback_to_Cpp.cpp
   )
 
-target_link_libraries(ADIS_16480_Interface 
-  /usr/local/lib/libsoc.so
-  ${roscpp_LIBRARIES}
-  )
-
 
 
 ###########
@@ -97,30 +85,26 @@ target_link_libraries(ADIS_16480_Interface
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 # include_directories(include)
-include_directories(
-  ${catkin_INCLUDE_DIRS}
-  ${PROJECT_SOURCE_DIR}/include
 
-)
 
 ## Declare a cpp executable
- add_executable(adis_16480_driver_node src/driver.cpp)
+add_executable(adis_16480_driver_node &{adis_16480_driver_SRCS})
 
+target_link_libraries(adis_16480_driver_node
+  /usr/local/lib/libsoc.so
+  ${roscpp_LIBRARIES}
+  ${catkin_LIBRARIES} 
+  )
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
- add_dependencies(adis_16480_driver_node ADIS_16480_Interface_gencpp adis_16480_driver_generate_messages_cpp ${PROJECT_NAME}_gencpp)
+ add_dependencies(adis_16480_driver_node 
+  adis_16480_driver_node_gencpp
+  adis_16480_driver_generate_messages_cpp
+)
 
 ## Specify libraries to link a library or executable target against
 #find_library(LIBSOC_LIBRARY libsoc /usr/local/lib)
 
- target_link_libraries(adis_16480_driver_node
-   ${catkin_LIBRARIES} 
-   /usr/local/lib/libsoc.so
-   ADIS_16480_Interface
-
-   #${LIBSOC_LIBRARY}
- )
-#add_dependencies(ADIS_16480_Interface ${PROJECT_NAME}_gencpp)
 #############
 ## Install ##
 #############
