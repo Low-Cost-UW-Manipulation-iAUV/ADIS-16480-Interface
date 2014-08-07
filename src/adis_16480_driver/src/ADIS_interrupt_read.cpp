@@ -99,7 +99,7 @@ int ADIS_16480_Interface::setup_interrupt_ADIS(int what_to_read)
     gpio_input = libsoc_gpio_request(GPIO_INPUT, LS_SHARED);  
    
     //If its all good break the circle
-    if (gpio_input != NULL){
+    if (gpio_input ){
       break;
       ROS_INFO("ADIS_16480_Driver: GPIO PINS successfully requested");
     }
