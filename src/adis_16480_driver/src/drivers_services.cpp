@@ -138,5 +138,5 @@ bool driver_services::setDecRate(adis_16480_driver::setDecRate::Request &req, ad
   res.confirm = adis_pointer->set_DEC_RATE(req.DEC_RATE);
       ROS_INFO("adis_16480_driver - you have set the Dec Rate");
 
-  return 0;
+  return EXIT_SUCCESS;
 }
