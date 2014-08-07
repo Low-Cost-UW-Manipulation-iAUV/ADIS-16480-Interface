@@ -86,29 +86,39 @@ int ADIS_16480_Interface::job_for_callback(){
 int ADIS_16480_Interface::setup_interrupt_ADIS(int what_to_read)
 {
   int ignore_me;
+  int multiple_tries = 0;
   interrupt_read_option = what_to_read;
   // Enable debug output
   libsoc_set_debug(1);
 
-  // Request gpios
-  gpio_input = libsoc_gpio_request(GPIO_INPUT, LS_SHARED);
 
+  //try a few times to get the GPIO device
+  for(multiple_tries = 0; multiple_tries < 10; multiple_tries++){
 
+    // Request gpios
+    gpio_input = libsoc_gpio_request(GPIO_INPUT, LS_SHARED);  
+   
+    //If its all good break the circle
+    if (gpio_input != NULL){
+      break;
+      ROS_INFO("ADIS_16480_Driver: GPIO PINS successfully requested");
+    }
+  }
 
-  // Ensure both gpio were successfully requested and if not tidy up and exit
+// Ensure both gpio were successfully requested and if not tidy up and exit
   if (gpio_input == NULL)
   {
-    // If gpio_request was successful
+    // If gpio_request was successful even though it failed before, than tidy up
     if (gpio_input)
     {
       // Free gpio request memory
       libsoc_gpio_free(gpio_input);
     }
-  
-    return EXIT_SUCCESS;  
+      ROS_ERROR("ADIS_16480_Driver: Could not get the GPIO pins");
+      return EXIT_SUCCESS;  
   }
-  
-  
+
+
   // Set direction to INPUT
   libsoc_gpio_set_direction(gpio_input, INPUT);
   
