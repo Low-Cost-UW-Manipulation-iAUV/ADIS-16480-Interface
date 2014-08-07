@@ -88,7 +88,7 @@ set(adis_16480_driver_SRCS
 
 
 ## Declare a cpp executable
-add_executable(adis_16480_driver_node &{adis_16480_driver_SRCS})
+add_executable(adis_16480_driver_node ${adis_16480_driver_SRCS})
 
 target_link_libraries(adis_16480_driver_node
   /usr/local/lib/libsoc.so
