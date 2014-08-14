@@ -1,3 +1,3 @@
-int16 FIR_filter_coeffs[120] 
+int16[120] FIR_filter_coeffs
 ---
 int8 confirm
