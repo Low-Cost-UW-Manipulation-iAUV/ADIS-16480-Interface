@@ -147,7 +147,7 @@ public:
 	uint8_t detect_missed_IR(void);
 
 //fir_filter_bank.cpp/h
-	int setFirCoeffs(uint16_t, uint16_t[120];
+	int setFirCoeffs(uint16_t, uint16_t[120]);
 
 
 
