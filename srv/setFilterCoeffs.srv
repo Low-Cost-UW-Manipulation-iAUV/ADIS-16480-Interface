@@ -1,4 +1,4 @@
-unsigned int16 FIR_Bank
-unsigned int16[120] FIR_filter_coeffs
+uint16 FIR_Bank
+uint16[120] FIR_filter_coeffs
 ---
 int8 confirm
