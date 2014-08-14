@@ -204,8 +204,7 @@ bool driver_services::pause(adis_16480_driver::pause::Request &req, adis_16480_d
 
 bool driver_services::setFilterCoeffs(adis_16480_driver::setFilterCoeffs::Request &req, adis_16480_driver::setFilterCoeffs::Response &res){
     ROS_INFO("adis_16480_driver - Setting FIR coeffs");
-    usleep(req.msecs_to*MS_TO_US);
-    res.confirm = setFirCoeffs(req.FIR_Bank, req.FIR_filter_coeffs);
+    res.confirm = adis_pointer->setFirCoeffs(req.FIR_Bank, req.FIR_filter_coeffs);
   if(res.confirm){
     ROS_INFO("adis_16480_driver -  Set FIR coeffs");
     return EXIT_SUCCESS;
@@ -217,8 +216,9 @@ bool driver_services::setFilterCoeffs(adis_16480_driver::setFilterCoeffs::Reques
 
 
 bool driver_services::startstopFilter(adis_16480_driver::startstopFilter::Request &req, adis_16480_driver::startstopFilter::Response &res){
-    uint8_t base_address = 0;
-    uint8_t bitmask = 0;
+    uint16_t base_address = 0;
+    uint16_t bitmask = 0;
+    uint16_t bank = 0;
     switch(req.axis){
       case X_AXIS:
         base_address = XY_AXES_BASE_ADDRESS;
