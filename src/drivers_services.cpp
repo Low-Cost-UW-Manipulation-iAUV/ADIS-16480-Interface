@@ -203,10 +203,25 @@ bool driver_services::pause(adis_16480_driver::pause::Request &req, adis_16480_d
 }
 
 bool driver_services::setFilterCoeffs(adis_16480_driver::setFilterCoeffs::Request &req, adis_16480_driver::setFilterCoeffs::Response &res){
-    uint16_t coeffs[120];
-    coeffs = req.FIR_filter_coeffs;
     ROS_INFO("adis_16480_driver - Setting FIR coeffs");
-    res.confirm = adis_pointer->setFirCoeffs(req.FIR_Bank, coeffs);
+    uint16_t bank = 0;
+    switch(req.FIR_Bank){
+      case 1:
+        bank = PG5;
+        break;
+
+      case 2:
+        bank = PG7;
+        break;
+
+      case 3:
+        bank = PG9;
+        break;
+
+      default:
+      return EXIT_FAILURE;
+    }
+    res.confirm = adis_pointer->setFirCoeffs(bank, req);
   if(res.confirm){
     ROS_INFO("adis_16480_driver -  Set FIR coeffs");
     return EXIT_SUCCESS;

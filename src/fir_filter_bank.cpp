@@ -14,13 +14,17 @@
 #include <stdint.h>
 #include <string.h>
 #include <sys/time.h>
+#include <vector> 
 
 #include "adis_16480_driver/spi_ADIS_16480.h"
-#include "adis_16480_driver/fir_filter_bank.h"
+#include "std_msgs/MultiArrayLayout.h"
+#include "std_msgs/MultiArrayDimension.h"
+ 
+#include "std_msgs/Int32MultiArray.h" 
 
 
 
-int ADIS_16480_Interface::setFirCoeffs(uint16_t page, uint16_t[120] coeffs){
+int ADIS_16480_Interface::setFirCoeffs(uint16_t page,  adis_16480_driver::setFilterCoeffs::Request array){
 	unsigned int x = 0;
 	int confirm = 0;
 	switch(page){
@@ -42,17 +46,17 @@ int ADIS_16480_Interface::setFirCoeffs(uint16_t page, uint16_t[120] coeffs){
 
 	//The 120 taps (16-bit word each) are split across two register pages.
 	for(x=0;x<=59;x++){
-		confirm = write_word(page, BASE_ADDRESS_BANK+(x * TAP_OFFSET), coeffs[x]);
+		confirm = write_word(page, BASE_ADDRESS_BANK+(x * TAP_OFFSET), array.FIR_filter_coeffs[x]);
 		if(confirm == EXIT_FAILURE){
-			ROS_ERROR("adis_16480_interface - FIR coefficient %d could not be set \n", x)
+			ROS_ERROR("adis_16480_interface - FIR coefficient %d could not be set \n", x);
 			return EXIT_FAILURE;
 		}
 	}
 
 	for(x=0;x<=60;x++){
-		write_word((page + 1), BASE_ADDRESS_BANK+(x * TAP_OFFSET), coeffs[60 + x] );
+		write_word((page + 1), BASE_ADDRESS_BANK+(x * TAP_OFFSET), array.FIR_filter_coeffs[60 + x] );
 		if(confirm == EXIT_FAILURE){
-			ROS_ERROR("adis_16480_interface - FIR coefficient %d could not be set \n", (60+x) )
+			ROS_ERROR("adis_16480_interface - FIR coefficient %d could not be set \n", (60+x) );
 			return EXIT_FAILURE;
 		}
 	}

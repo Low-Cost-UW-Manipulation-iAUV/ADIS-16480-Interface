@@ -56,3 +56,4 @@ CATKIN_IGNORE
 
 # OSX
 .DS_Store
+copy_to_BBB_BRLNET.sh

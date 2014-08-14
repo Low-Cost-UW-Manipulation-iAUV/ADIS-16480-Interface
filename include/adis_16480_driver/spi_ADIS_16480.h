@@ -24,6 +24,10 @@
 #include "libsoc_debug.h" 
 
 #include "adis_16480_driver/driver_services.h"
+#include "adis_16480_driver/fir_filter_bank.h"
+
+
+
 
 //IO stream
 #include <iostream>
@@ -147,7 +151,7 @@ public:
 	uint8_t detect_missed_IR(void);
 
 //fir_filter_bank.cpp/h
-	int setFirCoeffs(uint16_t, uint16_t[120]);
+	int setFirCoeffs(uint16_t,   adis_16480_driver::setFilterCoeffs::Request );
 
 
 
