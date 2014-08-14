@@ -148,7 +148,7 @@ bool driver_services::switchFrame(adis_16480_driver::switchFrame::Request &req, 
   if(req.new_frame==DS_ENU_FRAME){
     ROS_INFO("adis_16480_driver - Switching to ENU Frame in %d ms",req.msecs_to);
     usleep(req.msecs_to*MS_TO_US);
-    res.confirm = adis_pointer->clear_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL)
+    res.confirm = adis_pointer->clear_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL);
       if(res.confirm){
         ROS_INFO("adis_16480_driver - successfully switched to ENU Frame");
         return EXIT_SUCCESS;
