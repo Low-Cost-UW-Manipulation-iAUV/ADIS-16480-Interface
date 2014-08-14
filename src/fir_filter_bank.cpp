@@ -20,7 +20,7 @@
 
 
 
-int ADIS_16480_Interface::setFirCoeffs(uint16_t page, uint16_t coeffs[120]){
+int ADIS_16480_Interface::setFirCoeffs(uint16_t page, uint16_t[120] coeffs){
 	unsigned int x = 0;
 	int confirm = 0;
 	switch(page){
