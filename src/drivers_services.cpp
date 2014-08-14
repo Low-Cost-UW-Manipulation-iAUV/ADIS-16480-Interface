@@ -203,8 +203,9 @@ bool driver_services::pause(adis_16480_driver::pause::Request &req, adis_16480_d
 }
 
 bool driver_services::setFilterCoeffs(adis_16480_driver::setFilterCoeffs::Request &req, adis_16480_driver::setFilterCoeffs::Response &res){
+    uint16_t coeffs[120] = req.FIR_filter_coeffs;
     ROS_INFO("adis_16480_driver - Setting FIR coeffs");
-    res.confirm = adis_pointer->setFirCoeffs(req.FIR_Bank, req.FIR_filter_coeffs);
+    res.confirm = adis_pointer->setFirCoeffs(req.FIR_Bank, coeffs);
   if(res.confirm){
     ROS_INFO("adis_16480_driver -  Set FIR coeffs");
     return EXIT_SUCCESS;
