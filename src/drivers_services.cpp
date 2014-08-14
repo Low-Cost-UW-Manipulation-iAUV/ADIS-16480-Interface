@@ -24,6 +24,7 @@
 #include "adis_16480_driver/spi_ADIS_16480.h"
 #include "adis_16480_driver/ADIS_interrupt_read.h"
 #include "adis_16480_driver/driver_services.h"
+#include "adis_16480_driver/reg_ekf_cnfg.h"
 
 
 
@@ -131,10 +132,10 @@ bool driver_services::switchDataOutMode(adis_16480_driver::switchDataOutMode::Re
 
 //Switches from the std East North Up reference frame to the Body frame with x,y,z axes along the edges of the box
 bool driver_services::switchFrame(adis_16480_driver::switchFrame::Request &req, adis_16480_driver::switchFrame::Response &res){
-  if(req.Mode==DS_BODY_FRAME){
+  if(req.new_frame==DS_BODY_FRAME){
       ROS_INFO("adis_16480_driver - Switching to Body Frame in %d ms",req.msecs_to);
       usleep(req.msecs_to*MS_TO_US);
-      res.confirm = adis_pointer->set_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL)
+      res.confirm = adis_pointer->set_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL);
       if(res.confirm){
         ROS_INFO("adis_16480_driver - successfully switched to Body Frame");
         return EXIT_SUCCESS;
@@ -144,7 +145,7 @@ bool driver_services::switchFrame(adis_16480_driver::switchFrame::Request &req, 
       }
   }
 
-  if(req.Mode==DS_ENU_FRAME){
+  if(req.new_frame==DS_ENU_FRAME){
     ROS_INFO("adis_16480_driver - Switching to ENU Frame in %d ms",req.msecs_to);
     usleep(req.msecs_to*MS_TO_US);
     res.confirm = adis_pointer->clear_bits(PG3, EKF_CNFG, BITMASK_EKF_CNFG_BDY_FRM_SEL)

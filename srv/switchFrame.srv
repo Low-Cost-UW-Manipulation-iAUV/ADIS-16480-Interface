@@ -1,4 +1,5 @@
 int8 new_frame
+uint16 msecs_to
 ---
 int8 current_frame
 int8 confirm

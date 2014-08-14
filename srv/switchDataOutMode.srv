@@ -1,3 +1,4 @@
-int16 Mode
+int16 mode
+uint16 msecs_to
 ---
 int8 confirm
