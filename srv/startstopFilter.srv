@@ -1,6 +1,6 @@
-uint8 int onoffdc
-uint8 int axis
-uint8 int bank
+uint8 onoffdc
+uint8 axis
+uint8 bank
 uint16 msecs_to
 ---
 int8 confirm
