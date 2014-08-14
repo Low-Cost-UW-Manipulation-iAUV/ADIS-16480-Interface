@@ -88,12 +88,12 @@ uint8_t ADIS_16480_Interface::set_bits(uint16_t page, uint16_t base_address, uin
   if(rx[2] == register_content_after){
     printf("ADIS16480 - Register Write: Success, register now contains: 0x%x\n",rx[2]);
 
-    return 1;
+    return EXIT_SUCCESS;
 
   }else{
     printf("ADIS16480 - Register Write: FAILURE, register now contains: 0x%x\n",rx[2]);
 
-    return 0;
+    return EXIT_FAILURE;
 
   }
 
@@ -155,12 +155,12 @@ uint8_t ADIS_16480_Interface::clear_bits(uint16_t page, uint16_t base_address, u
   if(rx[2] == register_content_after){
     printf("ADIS16480 - Register Write: Success, register now contains: 0x%x\n",rx[2]);
 
-    return 1;
+    return EXIT_SUCCESS;
 
   }else{
     printf("ADIS16480 - Register Write: FAILURE, register now contains: 0x%x\n",rx[2]);
 
-    return 0;
+    return EXIT_FAILURE;
 
   }
 
@@ -208,12 +208,12 @@ uint8_t ADIS_16480_Interface::write_word(uint16_t page, uint16_t base_address, u
   if(rx[2] == register_content_after){
     printf("ADIS16480 - Register Write: Success, register now contains: 0x%x\n",rx[2]);
 
-    return 1;
+    return EXIT_SUCCESS;
 
   }else{
     printf("ADIS16480 - Register Write: FAILURE, register now contains: 0x%x\n",rx[2]);
 
-    return 0;
+    return EXIT_FAILURE;
 
   }
 

@@ -257,16 +257,19 @@ uint8_t ADIS_16480_Interface::configure_initialise(uint8_t spi_device, uint8_t c
  return EXIT_SUCCESS; 
 }
 
+uint8_t ADIS_16480_Interface::pause(bool onoff){
+  if(onoff == ON){
+    return setup_interrupt_ADIS(interrupt_read_option);
+  }else{
+    return disable_Interrupt_ADIS();
+  }
+  return EXIT_FAILURE;
+}
+
+
 uint8_t ADIS_16480_Interface::close(){
   libsoc_spi_free(spi_dev);
   //close the file if it was open.
   print_data_file(0, OFF, OFF,OFF,OFF,OFF,OFF);
   return EXIT_SUCCESS;
 }
-
-
-
-//****************************************************************************************************************************************
-//****************************************************************************************************************************************
-//****************************************************************************************************************************************
-//****************************************************************************************************************************************

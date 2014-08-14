@@ -98,6 +98,7 @@ public:
 	void print_data_file(unsigned int, bool, bool, bool, bool, bool, bool);
 	void publish_to_ros_or_not(bool yesorno);
 	void register_driver_service(driver_services* );
+	uint8_t pause(bool);
 
 //reg_diag_sts.c/.h
 	uint8_t read_self_test();
@@ -137,11 +138,16 @@ public:
 //ADIS_interrupt_read.c/h
 	int setup_interrupt_ADIS(int);
 	int disable_Interrupt_ADIS(void);
-	int job_for_callback();
+	int job_for_callback(void);
+	int switchDataOutMode(int);
+
 
 //interrupt_detection.c/h
 	void setup_interrupt_detection(bool);
 	uint8_t detect_missed_IR(void);
+
+//fir_filter_bank.cpp/h
+	int setFirCoeffs(uint16_t, uint16_t[120];
 
 
 
@@ -160,6 +166,7 @@ private:
 
 //ADIS_interrupt_read.c/h
 	int interrupt_read_option;	
+
   	
 //spi_ADIS_16480.c/h
 	void print_to_file();

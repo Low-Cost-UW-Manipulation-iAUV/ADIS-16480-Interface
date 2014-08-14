@@ -1,4 +1,6 @@
-bool onoff
-int16 msecs
+uint8 int onoffdc
+uint8 int axis
+uint8 int bank
+uint16 msecs_to
 ---
 int8 confirm

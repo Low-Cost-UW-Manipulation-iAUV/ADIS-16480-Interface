@@ -29,7 +29,7 @@
 
 
 /*This function will be called when the callback mechanism is used. Place all jobs you want it to do in here.*/
-int ADIS_16480_Interface::job_for_callback(){
+int ADIS_16480_Interface::job_for_callback(void){
   
   switch(interrupt_read_option){
   
@@ -182,4 +182,9 @@ int ADIS_16480_Interface::disable_Interrupt_ADIS(void){
     // Free gpio request memory
     libsoc_gpio_free(gpio_input);
   }
+}
+
+int ADIS_16480_Interface::switchDataOutMode(int new_ir_read_option){
+  interrupt_read_option = new_ir_read_option;
+  return EXIT_SUCCESS;
 }

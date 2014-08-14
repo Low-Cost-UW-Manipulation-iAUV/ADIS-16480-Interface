@@ -1,1 +1,1 @@
-# Master README file
+# This programm interfaces the ADIS16480 Driver to the ROS

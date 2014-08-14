@@ -74,6 +74,7 @@ set(adis_16480_driver_SRCS
   src/reg_glob_cmd.cpp
   src/reg_sys_e_flag.cpp
   src/wrapper_C_library_callback_to_Cpp.cpp
+  src/fir_filter_bank.cpp
   )
 
 
